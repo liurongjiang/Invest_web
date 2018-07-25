@@ -1,0 +1,135 @@
+body{
+    background: url("/images/login_back.png") no-repeat center center;
+    background-size:cover;
+    height: 100%;
+    width:100%;
+}
+.login-container{
+    width: 375px;
+    margin: 0 auto;
+}
+h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+h4, h5, h6 {
+    font-size: 18px;
+    padding: 10px;
+}
+.login-layout .widget-box {
+    visibility: hidden;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 0;
+    box-shadow: none;
+    padding: 6px;
+    background-color: #394557;
+    -moz-transform: scale(0,1) translate(-150px);
+    -webkit-transform: scale(0,1) translate(-150px);
+    -o-transform: scale(0,1) translate(-150px);
+    -ms-transform: scale(0,1) translate(-150px);
+    transform: scale(0,1) translate(-150px);
+}
+.widget-body {
+    border: 0;
+    background-color: #FFF;
+}
+
+.login-layout .login-box .widget-main {
+    padding-bottom: 16px;
+}
+.header.blue {
+    border-bottom-color: #d5e3ef;
+}
+
+h4.bigger {
+    font-size: 19px;
+}
+
+.header {
+    line-height: 28px;
+    margin-bottom: 16px;
+    margin-top: 0px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #CCC;
+}
+
+.blue {
+    color: #478fca!important;
+}
+
+.lighter {
+    font-weight: lighter;
+}
+#login-box{
+    width:340px;
+    height:270px;
+    background:rgba(0,0,0, 0.3) ;
+    padding:10px;
+}
+.widget-main{
+    padding: 20px;
+    background: #f7f7f7;;
+    height: 85%;
+    text-align: center;
+}
+form div{
+    padding: 12px;
+    color: #478fca;
+}
+form div span {
+    width: 60px;
+}
+input[type="text"], input[type="password"]{
+    border-radius: 0!important;
+    color: #858585;
+    background-color: #fff;
+    border: 1px solid #d5d5d5;
+    padding: 5px 4px;
+    line-height: 1.2;
+    font-size: 14px;
+    font-family: inherit;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    -webkit-transition-duration: .1s;
+    transition-duration: .1s;
+    width:100%;
+}
+input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #696969;
+    border-color: #f59942;
+    background-color: #fff;
+    outline: 0;
+}
+.height{
+    height:20px;
+}
+input[type="submit"],input[type="button"] {
+    display: inline-block;
+    color: #FFF!important;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25)!important;
+    background-image: none!important;
+    border-radius: 0;
+    box-shadow: none!important;
+    -webkit-transition: all ease .15s;
+    transition: all ease .15s;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0;
+    position: relative;
+    width: 45%!important;
+    padding: 5px;
+    background-color: #1b6aaa;
+    border-color: #428bca;
+    margin-top: 20px;
+    outline: 0;
+}
+input[type="submit"]:hover {
+    background-color:  #428bca;
+    border-color:  #1b6aaa;
+}
+

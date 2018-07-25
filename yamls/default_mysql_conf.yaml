@@ -1,0 +1,7 @@
+HOST: matrix2601.mysql.rds.aliyuncs.com
+PORT: 3306
+USER: root
+PASSWORD: J@4235522
+DB: crawler #industry_com_info
+CHARSET: utf8
+

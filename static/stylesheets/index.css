@@ -1,0 +1,258 @@
+.navbar-brand {
+    padding: 6px 13px;
+}
+.navbar-name{
+    float: left;
+    height: 37px;
+    padding: 4px 15px;
+    font-size: 20px;
+    color: #068892;
+    font-weight: 600;
+    border-left: 2px solid;
+    margin-top: 7px;
+}
+.container-fluid{
+    width: 1140px;
+    margin: 0 auto;
+}
+.navbar {
+    border-bottom: 2px solid #068892;
+    background: -webkit-linear-gradient(#EEF3F9, #fff); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#EEF3F9, #fff); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#EEF3F9, #fff); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#EEF3F9, #fff); /* 标准的语法 */
+}
+section{
+    width: 1140px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+body{
+    background: #fefefe;
+}
+aside , article{
+   /* border: 1px solid red;*/
+    /*background: #ffff;*/
+}
+aside{
+    width:200px;
+    height:100%;
+    position: fixed;
+    top:60px;
+}
+article{
+    /*border: 1px solid red;*/
+    width:920px;
+    height:1000px;
+    padding-top: 10px;
+}
+a:focus, a:hover {
+    color: #23527c;
+    text-decoration: none;
+}
+.panel-body {
+    padding: 0;
+}
+.list-group {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+.panel-group .panel+.panel {
+    margin-top: 0;
+}
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    padding-left: 22px;
+    margin-bottom: -1px;
+    background-color: #6ba2f3;
+    border: 1px solid #fff;
+}
+article .panel-default>.panel-heading {
+    color: #fff;
+    background-color: #79afff;
+    border-color: #ddd;
+    height: 40px;
+}
+.tbl-title {
+    margin: 0 auto;
+    width: 100%;
+    height: 32px;
+    border-bottom: 2px solid #c4dafa;
+    margin-top: 10px;
+}
+.table-tb {
+    height: 32px;
+    border-bottom: 2px solid #ff0000;
+    background: rgba(0, 0, 0, 0) local 1px 15px;
+    color: #5d5d5d;
+    font-weight: 700;
+    font-size: 13px;
+}
+article .panel-body {
+    padding: 0px 20px 20px 20px;
+}
+article form{
+    padding: 10px;
+}
+article form li{
+    height: 50px;
+    color: #999;
+    font-size: 12px;
+    padding: 10px 0;
+}
+article form li span{
+    width: 120px;
+    margin-left: 9px;
+    display: inline-block;
+    font-size: 12px;
+    text-align: left;
+    color: #66738f;
+}
+article form li  input.form-control {
+    width: 260px;
+    display: inline-block;
+    height: 28px;
+    padding: 3px 12px;
+    font-size: 10px;
+    margin-right: 20px;
+    border: 1px solid #bbe9f6;
+    background-color: #f0f8fd;
+}
+article form li span:hover{
+    background: #ebf4ff;
+    color: #3879d9;
+}
+.get_top span{
+    font-size: 20px;
+    color: #fff;
+}
+.get_top{
+    width: 36px;
+    line-height: 30px;
+    padding-top: 7px;
+    background: #7CC8E8;
+    position: fixed;
+    bottom: 20px;
+    right: 18px;
+    text-align: center;
+    border-radius: 4px;
+}
+/*    padding-top: 7px;*/
+.CHGINFO_contral{
+    padding-top: 7px;
+}
+.CHGINFO_contral span {
+    margin-right: 10px;
+    padding:2px;
+}
+.CHGINFO_contral span.glyphicon-remove{
+    position: relative;
+    top:2px;
+}
+.glyphicon{
+    cursor: pointer;
+}
+.glyphicon.glyphicon-edit{
+    color: #0fd944;
+}
+.glyphicon.glyphicon-remove{
+    color: #ff002f;
+}
+.glyphicon.glyphicon-plus{
+    color: #416ff1;
+}
+.panel-default {
+    color: #fff;
+    border-color: #d8f1f8;
+}
+.panel-default>.panel-heading {
+    color: #fff;
+    background-color: #3361ad;
+    border-color: #19aedb;
+}
+aside .panel-heading h4.panel-title a:hover,
+aside .panel-heading h4.panel-title a
+{
+    color: #fff;
+}
+.CHGINFO_table_title ul,.CHGINFO_table_title{
+    width:100%;
+    background: #f3f3f3;
+}
+.CHGINFO_table_title tr td{
+    border-left:1px solid #d8f1f8 ;
+    color: #66738f;
+    padding: 10px 0;
+    text-align: center;
+}
+.CHGINFO_table_title ul{
+    border-bottom:1px solid #d8f1f8 ;
+}
+
+.CHGINFO_table_title tr td:first-child,
+.CHGINFO_table tbody tr td:first-child{
+    width:20%;
+}
+.CHGINFO_table_title tr td:nth-child(2),
+.CHGINFO_table tbody tr td:nth-child(2){
+    width: 30%;
+}
+.CHGINFO_table_title tr td:nth-child(3),
+.CHGINFO_table tbody tr td:nth-child(3){
+    width: 30%;
+}
+.CHGINFO_table_title tr td:nth-child(4),
+.CHGINFO_table tbody tr td:nth-child(4){
+    width: 10%;
+}
+.CHGINFO_table_title tr td:nth-child(5),
+.CHGINFO_table tbody tr td:nth-child(5){
+    width: 10%;
+}
+.CHGINFO_table_title{
+    margin-top: 20px;
+    border:1px solid #d8f1f8 ;
+}
+aside .panel-group .panel-heading h4 a span{
+    margin-right: 12px;
+}
+table tr td input{
+    width:100%;
+    border: none;
+    background: none;
+    text-align: center;
+    padding: 10px 5px;
+}
+table.CHGINFO_table tr td{
+    border-left:1px solid #d8f1f8;
+    background: #fff;
+    text-align: center;
+    color: #66738f;
+    font-size: 12px;
+}
+table.CHGINFO_table tr td:last-child{
+    font-size: 14px;
+}
+
+table tr td:first-child{
+    border-left:none;
+}
+.CHGINFO_table{
+    border:1px solid #d8f1f8;
+}
+.all_submit{
+    background: #7CC8E8;
+    position: fixed;
+    bottom: 20px;
+    right: 70px;
+    text-align: center;
+    padding: 7px 12px;
+}
+.CHGINFO_table_tbody tr{
+    border-bottom: 1px solid #d8f1f8;
+}
+aside li{
+    cursor: pointer;
+}
