@@ -2,32 +2,12 @@
 from flask import request, render_template
 from database.my_mysql import MysqlHandle
 from my_time import *
+from util.date_regex_handler import investDateHandler
 from invest import invest
-import re, json
+import re, json, yaml
   
-@invest.route('/list', methods=('GET', 'POST'))              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
-def invest_list():
-    print('__name__', __name__)
-    return render_template('invest/list.html')  #返回index.html模板，路径默认在templates下
-
-def investDateHandler(string):
-    regx='(?P<year>\d{4})\D?(?P<month>\d*)\D?(?P<day>\d*)'
-    result=re.search(regx, string)
-    if result is None: return None
-    year=result.group('year')
-    month=result.group('month')
-    day=result.group('day')
-    if len(month) < 2:
-        if len(month)==0:
-            month='01'
-        else:
-            month = '0' + month
-    if len(day) < 2:
-        if len(day)==0:
-            day='01'
-        else:
-            day = '0' + day
-    return '%s-%s-%s 00:00:00' % (year, month, day)
+mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
+mysql=MysqlHandle(mysql_settings)
 
 country_map={
     'gn': 0,
@@ -56,57 +36,71 @@ round_map={
     'b_add': u'B+轮',
     'c': u'C轮',
     'd': u'D轮',
+    'e': u'E轮',
+    'f': u'F轮',
     'other': u'其它'
 }
 
-mysql=MysqlHandle()
+@invest.route('/list', methods=('GET', 'POST'))              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
+def invest_list():
+    print('__name__', __name__)
+    return render_template('invest/list.html')  #返回index.html模板，路径默认在templates下
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
-    start = request.args.get('start') or 0
     #orderBy = 
+    start = request.args.get('start') or 0
     industry = request.args.get('industry') or None
     _round = request.args.get('round') or None
     country = request.args.get('country') or None
     keyWords = request.args.get('keyWords') or None
     investDate = request.args.get('investDate') or None
 
-    querySql='SELECT * FROM  matrix_invest'
-    countSql='SELECT COUNT(1) FROM  matrix_invest'
+    querySql='SELECT * FROM  integrated_company'
+    countSql='SELECT COUNT(1) FROM  integrated_company'
 
     WHERE = ''
     if industry and industry in industry_map:
-        WHERE += ' matrixIndustry="%s"' % industry_map[industry]
+        WHERE += ' industry="%s"' % industry_map[industry]
     if _round and _round in round_map:
         if _round=='other':
-            roundInfo = ' roundLevel >= 15'
+            roundInfo = 'turn_level >= 16'
         else:
-            roundInfo = ' whichRound="%s"' % round_map[_round]
+            roundInfo = ' finance_turn="%s"' % round_map[_round]
         if WHERE: WHERE += ' AND' + roundInfo
         else: WHERE += roundInfo
-    if country and country in country_map:
-        countryInfo=' country=%s' % country_map[country]
+
+    if country and country in "gn|gw":
+        if country=='gn':
+            countryInfo=' country="中国"'
+        elif country=='gw':
+            countryInfo=' country!="中国"'
+
         if WHERE: WHERE += ' AND' + countryInfo
         else: WHERE += countryInfo
+
     if keyWords:
-        keyInfo = ' (projectName LIKE "%'+ keyWords.strip() + '%" OR companyName like"%'+ keyWords.strip() +'%")'
+        keyInfo = ' (project_name LIKE "%'+ keyWords.strip() + '%" OR company_name like"%'+ keyWords.strip() +'%")'
         if WHERE: WHERE += ' AND' + keyInfo
         else: WHERE += keyInfo
+
     if investDate:
         dateLs=investDate.split('/')
         startDate=investDateHandler(dateLs[0])
         startTime=date2time(startDate)
-        investInfo = ' investTime > %s' % startTime
+        investInfo = ' finance_time > %s' % startTime
         if len(dateLs)==2 and dateLs[1]:
             endDate=investDateHandler(dateLs[1])
             endTime=date2time(endDate)
-            investInfo += ' AND investTime < %s' % endTime
+            investInfo += ' AND finance_time < %s' % endTime
         if WHERE: WHERE += ' AND' + investInfo
         else: WHERE += investInfo
+
     if WHERE:
         querySql += ' WHERE' + WHERE
         countSql += ' WHERE' + WHERE
-    querySql += ' ORDER BY investTime DESC LIMIT %s, 10' % start
+
+    querySql += ' ORDER BY finance_time DESC LIMIT %s, 10' % start
 
     docs = mysql.query(querySql)
     count = mysql.query(countSql)
