@@ -8,13 +8,13 @@ class Singleton(object):
             cls._instance = orig.__new__(cls, *args, **kw)
         return cls._instance
 
-class MysqlHandle(Singleton):
+class MysqlHandle():
     '''@ 此处采用单列模式，
        @ 避免过多的实例化。
         '''
 
-    def __init__(self, settings_path="/Users/liurongjiang/Desktop/Invest_web/yamls/default_mysql_conf.yaml"):
-        self.settings = yaml.load(open(settings_path))
+    def __init__(self, settings):
+        self.settings = settings
         self.config = {
             'host':         self.settings['HOST'],
             'port':         self.settings['PORT'],
