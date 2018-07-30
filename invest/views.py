@@ -72,9 +72,9 @@ def invest_json():
 
     if country and country in "gn|gw":
         if country=='gn':
-            countryInfo=' country="中国"'
+            countryInfo=u' country="中国"'
         elif country=='gw':
-            countryInfo=' country!="中国"'
+            countryInfo=u' country!="中国"'
 
         if WHERE: WHERE += ' AND' + countryInfo
         else: WHERE += countryInfo
