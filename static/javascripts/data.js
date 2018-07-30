@@ -165,6 +165,8 @@ function invest(){
         console.log(param);
         table.ajax.url( '/invest/invest_json?' + param).load();
     });
+ 
+    $.fn.dataTable.ext.errMode = 'throw';
 
     $("#keyWords,#investDate").change(function(){
         var _id = $(this).attr("id");
