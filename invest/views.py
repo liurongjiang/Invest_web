@@ -5,7 +5,10 @@ from my_time import *
 from util.date_regex_handler import investDateHandler
 from invest import invest
 import re, json, yaml
-  
+
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from run import db, app, login_manager
+
 mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
 mysql=MysqlHandle(mysql_settings)
 
@@ -44,11 +47,12 @@ round_map={
 @invest.route('/list', methods=('GET', 'POST'))              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 def invest_list():
     print('__name__', __name__)
-    return render_template('invest/list.html')  #返回index.html模板，路径默认在templates下
+    user = current_user
+    return render_template('invest/list.html', user = current_user)  #返回index.html模板，路径默认在templates下
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
-    #orderBy = 
+    #orderBy =
     start = request.args.get('start') or 0
     industry = request.args.get('industry') or None
     _round = request.args.get('round') or None

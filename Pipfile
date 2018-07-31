@@ -7,6 +7,11 @@ name = "pypi"
 flask = "*"
 pyyaml = "*"
 pymysql = "*"
+flask-bcrypt = "*"
+flask-bootstrap = "*"
+flask-wtf = "*"
+flask-sqlalchemy = "*"
+werkzeug = "*"
 
 [dev-packages]
 
