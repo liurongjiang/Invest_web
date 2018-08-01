@@ -5,7 +5,7 @@ from my_time import *
 from util.date_regex_handler import investDateHandler
 from invest import invest
 import re, json, yaml
-  
+
 mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
 mysql=MysqlHandle(mysql_settings)
 
@@ -48,7 +48,7 @@ def invest_list():
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
-    #orderBy = 
+    #orderBy =
     start = request.args.get('start') or 0
     industry = request.args.get('industry') or None
     _round = request.args.get('round') or None
@@ -88,11 +88,11 @@ def invest_json():
         dateLs=investDate.split('/')
         startDate=investDateHandler(dateLs[0])
         startTime=date2time(startDate)
-        investInfo = ' finance_time > %s' % startTime
+        investInfo = ' finance_time >= %s' % startTime
         if len(dateLs)==2 and dateLs[1]:
             endDate=investDateHandler(dateLs[1])
             endTime=date2time(endDate)
-            investInfo += ' AND finance_time < %s' % endTime
+            investInfo += ' AND finance_time <= %s' % endTime
         if WHERE: WHERE += ' AND' + investInfo
         else: WHERE += investInfo
 
