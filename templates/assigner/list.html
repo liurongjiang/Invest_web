@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>数据查询检索</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel='stylesheet' href='/static/stylesheets/style.css'/>
+        <link rel="stylesheet" type="text/css" href="/static/stylesheets/jquery.dataTables.min.css">
+        <style type="text/css" title="currentStyle">
+         @import "/static/stylesheets/jquery-ui.css";
+         @import "/static/stylesheets/jquery-base.css";
+         td.details-control {
+            background: url('/static/images/details_open.png') no-repeat center center;
+            cursor: pointer;
+         }
+         tr.shown td.details-control {
+            background: url('/static/images/details_close.png') no-repeat center center;
+         }
+        </style>
+        <style>
+            body{height:100%; overflow:hidden; margin:0px; padding:0px;}
+            .box {height:100%; position:absolute; width:100%;}
+            .center {text-align:center}
+            .left {text-align:left}
+            .auto_data {
+                   overflow: auto;
+            }
+            .auto {
+                   height: 88%;
+                   overflow: auto;
+            }
+        .dataTables_length{
+            margin: 0 23px;
+        }
+        .dataTables_filter{
+            margin: 0 20px;
+        }
+        .head_filter{
+            float: left;
+            min-width: 50px;
+            cursor: pointer;
+            margin: 0 10px 5px 0;
+            text-align: center;
+            display: inline-block;
+            padding: 2px 6px;
+        }
+        .filter_font{
+            color:hotpink;
+            font-weight: bold;
+        }
+        .row {
+            width: 88%;
+            max-width: 100%;
+            min-width: 768px;
+            margin: 0 auto;
+            background-color: yellow;
+        }
+        .constrain{
+            width: 88%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .auto {
+            height: 90%;
+            overflow: auto;
+        }
+        .mytd {
+            border-left: thin dashed grey;
+            border-right: thin dashed grey;
+            border-bottom: thin dashed grey;
+            border-top: thin dashed grey;
+        }
+        </style>
+        <!-- <script>
+          var event_id = {{event_id}}
+        </script> -->
+
+        <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
+        <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="/static/javascripts/assigner.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script>
+        $(function() {
+          $('input[name="investDate"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+              format: 'YYYY-MM-DD'
+            }
+          });
+
+          $('input[name="investDate"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        });
+        </script>
+
+</head>
+<body>
+    <div id="container" class="box">
+            <nav id="main" class="constrain clearfix">
+                    <div class="menu-top-container">
+                        <ul id="menu-top" class="menu">
+                            <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
+                            <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
+                            <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
+                            <li class="menu-item" data-name="login"><a href="/ejs?__=login">登录</a></li>
+                            <li class="menu-item" data-name="regist"><a href="/ejs?__=regist">注册</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            <div id="content-wrapper" class="clearfix row auto">
+                <div>
+                    <div class="head_filter">
+                        <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">投资日期：</label>
+                    </div>
+                    <div class="head_filter"><input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="" value=""></input>
+                    </div>
+                    <div style="width: 80%"></div>
+                </div>
+                </br>
+                <p>
+                    <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                </p>
+                <div width="100%">
+                        <div class="head_filter">
+                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">关键词(公司/项目):</label>
+                        </div>
+                        <div class="head_filter"><input name="keyWords" style="width: 200px; z-index: 10000;" placeholder="请输入关键词" value="" id="keyWords"></input></div>
+                    </div>
+                    </br>
+                    <p>
+                        <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                    </p>
+                <div width="100%">
+                        <div class="head_filter">
+                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">区域：</label>
+                        </div>
+                        <div class="head_filter"><span class="country filter_font" id="all">不限</span></div>
+                        <div class="head_filter"><span class="country" id="gn">国内</span></div>
+                        <div class="head_filter"><span class="country" id="gw">国外</span></div>
+                    </div>
+                    </br>
+                    <p>
+                        <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                    </p>
+                <div width="100%">
+                    <div class="head_filter">
+                        <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">投资轮次：</label>
+                    </div>
+                    <div class="head_filter"><span class="round filter_font" id="all">不限</span></div>
+                    <div class="head_filter"><span class="round" id="zhongzi">种子轮</span></div>
+                    <div class="head_filter"><span class="round" id="tianshi">天使轮</span></div>
+                    <div class="head_filter"><span class="round" id="pre_a">Pre-A轮</span></div>
+                    <div class="head_filter"><span class="round" id="a">A轮</span></div>
+                    <div class="head_filter"><span class="round" id="a_add">A+轮</span></div>
+                    <div class="head_filter"><span class="round" id="pre_b">Pre-B轮</span></div>
+                    <div class="head_filter"><span class="round" id="b">B轮</span></div>
+                    <div class="head_filter"><span class="round" id="b_add">B+轮</span></div>
+                    <div class="head_filter"><span class="round" id="c">C轮</span></div>
+                    <div class="head_filter"><span class="round" id="d">D轮</span></div>
+                    <div class="head_filter"><span class="round" id="other">其它</span></div>
+                </div>
+                </br>
+                <p>
+                    <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                </p>
+                <div width="100%">
+                    <div class="head_filter">
+                        <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">所属行业：</label>
+                    </div>
+                    <div class="head_filter"><span class="industry filter_font" id="all">不限</span></div>
+                    <div class="head_filter"><span class="industry" id="xfsj">消费升级</span></div>
+                    <div class="head_filter"><span class="industry" id="xjs">新技术</span></div>
+                    <div class="head_filter"><span class="industry" id="qyfw">企业服务</span></div>
+                    <div class="head_filter"><span class="industry" id="whyl">文娱+移动2C</span></div>
+                    <div class="head_filter"><span class="industry" id="jr">互联网金融</span></div>
+                    <div class="head_filter"><span class="industry" id="yl">医疗</span></div>
+                    <div class="head_filter"><span class="industry" id="jy">教育</span></div>
+                    <div class="head_filter"><span class="industry" id="dcx">大出行</span></div>
+                    <div class="head_filter"><span class="industry" id="other">其它</span></div>
+                </div>
+                </br>
+                <p>
+                    <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                </p>
+                <div width="100%">
+                    <div class="head_filter">
+                        <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">归类：</label>
+                    </div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="xfsj" >消费升级</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)"id="xjs">新技术</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="qyfw">企业服务</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="whyl">文娱+移动2C</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="jr">互联网金融</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="yl">医疗</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="jy">教育</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="dcx">大出行</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="other">其它</button></div>
+                </div>
+                </br>
+                <p>
+                    <hr style="height:10px;border:none;border-top:10px groove skyblue;" />
+                </p>
+                <div id="table" >
+                    <table id="invest" class="cell-border hover order-column" style="width:100%;" >
+                        <thead>
+                            <tr>
+                                <th width="10%">项目名称</th>
+                                <th width="5%">融资日期</th>
+                                <th width="5%">融资轮次</th>
+                                <th width="60%">项目简介</th>
+                                <th width="10%">网站行业分类</th>
+                                <th width="10%">行业分类</th>
+                            </tr>
+                        </thead>
+                        <tbody class="clearfix row auto">
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</body>
+</html>
