@@ -43,6 +43,7 @@ round_map={
 
 @invest.route('/list', methods=('GET', 'POST'))              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 def invest_list():
+    next_index = request.args.get('next_index') or 0
     print('__name__', __name__)
     return render_template('invest/list.html')  #返回index.html模板，路径默认在templates下
 
@@ -112,7 +113,3 @@ def invest_json():
     resp['recordsLength']=count[0]['COUNT(1)'] if count else 0
     resp['recordsFiltered']=count[0]['COUNT(1)'] if count else 0
     return json.dumps(resp)
-
-@invest.route('/test', methods=('GET', 'POST'))
-def test():
-    return '1111'

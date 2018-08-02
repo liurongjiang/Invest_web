@@ -1,5 +1,5 @@
 #coding=utf-8
-from flask import request, render_template
+from flask import request, render_template, jsonify
 from database.my_mysql import MysqlHandle
 from my_time import *
 from util.date_regex_handler import investDateHandler
@@ -41,6 +41,18 @@ round_map={
     'other': u'其它'
 }
 
+@assigner.route('/assign_industry', methods=['POST'])              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
+def assign_industry():
+    industry_id = str(request.json['industry_id'])
+    event_id = str(request.json['event_id'])
+    updateSql = "UPDATE integrated_company SET industry = '"+industry_id+"' WHERE (id = " + event_id + ");"
+    mysql.update(updateSql)
+    return jsonify(
+        code=0,
+        msg= updateSql
+    )
+
+
 @assigner.route('/list', methods=('GET', 'POST'))              #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 def invest_list():
     print('__name__', __name__)
@@ -49,6 +61,7 @@ def invest_list():
 @assigner.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
     #orderBy =
+
     start = request.args.get('start') or 0
     industry = request.args.get('industry') or None
     _round = request.args.get('round') or None
@@ -105,8 +118,9 @@ def invest_json():
     docs = mysql.query(querySql)
     count = mysql.query(countSql)
 
-    print('__querySql: ', querySql)
+    print('__querySql:asddds ', querySql)
     resp={}
+
     resp['data']=docs
     resp['recordsTotal']=count[0]['COUNT(1)'] if count else 0
     resp['recordsLength']=count[0]['COUNT(1)'] if count else 0

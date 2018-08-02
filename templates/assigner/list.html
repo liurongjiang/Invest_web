@@ -73,12 +73,14 @@
             border-top: thin dashed grey;
         }
         </style>
-        <!-- <script>
-          var event_id = {{event_id}}
-        </script> -->
 
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
+
+        <script>
+          var assign_industry_url = "{{url_for('assigner.assign_industry',)}}"
+          var assigner_list_url = "{{url_for('assigner.invest_list',)}}"
+        </script>
         <script type="text/javascript" src="/static/javascripts/assigner.js"></script>
 
 
@@ -86,7 +88,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
         <script>
-        $(function() {
+        $(function(){
           $('input[name="investDate"]').daterangepicker({
             autoUpdateInput: false,
             locale: {
@@ -188,20 +190,19 @@
                 </br>
                 <p>
                     <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
-                </p>
                 <div width="100%">
                     <div class="head_filter">
                         <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">归类：</label>
                     </div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="xfsj" >消费升级</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)"id="xjs">新技术</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="qyfw">企业服务</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="whyl">文娱+移动2C</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="jr">互联网金融</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="yl">医疗</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="jy">教育</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="dcx">大出行</button></div>
-                    <div class="head_filter"><button onclick="assign_industry(this.id)" id="other">其它</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="xfsj">消费升级</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)"id="xjs">新技术</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="qyfw">企业服务</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="whyl">文娱+移动2C</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="jr">互联网金融</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="yl">医疗</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="jy">教育</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="dcx">大出行</button></div>
+                    <div class="head_filter"><button onclick="assign_industry(this)" id="other">其它</button></div>
                 </div>
                 </br>
                 <p>
