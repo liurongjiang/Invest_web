@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    invest();
+    invest()
+    session
 });
 
 var language = {
@@ -21,9 +22,10 @@ var language = {
 
 function assign_industry(objButton){
     var table = $('#invest').DataTable()
-    selected = table.rows('.selected').data()
+    var selected = table.rows('.selected').data()
     if (selected){
-      select_index = table.row('.selected').index() + 1
+      sessionStorage['edited_index'] = table.row('.selected').index()
+      sessionStorage['select_index'] = (table.row('.selected').index() + 1)
       row = selected[0]
       data = {'event_id': row['id'], 'industry_id':objButton.innerHTML }
       data = JSON.stringify(data, null, '\t'),
@@ -36,8 +38,7 @@ function assign_industry(objButton){
         data: data,
         success: function(response) {
             console.log(response)
-            localStorage['select_index'] = String(select_index)
-            location.reload()
+            table.draw('page')
          },
          error: function(error) {
              alert('Error occured')
@@ -49,10 +50,26 @@ function assign_industry(objButton){
 
 function invest(){
     var table = $('#invest').DataTable({
+      stateSave: true,
+      "orderClasses": false,
+      "drawCallback": function( settings ) {
+        select_index = sessionStorage['select_index'] || 0
+        edited_index = sessionStorage['edited_index']
+        if (select_index >= 10 ){
+          sessionStorage['select_index'] = 0
+          sessionStorage.removeItem('edited_index')
+          table.page( 'next' ).draw('page')
+          location.reload()
+        }
+        if (typeof edited_index !== 'undefined'){
+          table.row(edited_index).nodes().to$().addClass('edited')
+        }
+        table.row(select_index).nodes().to$().addClass('selected')
+      },
       "searching": false,
       "processing": true,
       "serverSide": true,
-      "select": true,
+      "select": false,
       "scrollX": true,
       "scrollY": true,
       "destroy": false,
@@ -67,7 +84,6 @@ function invest(){
       // 列控制
         "columns": [
             { "data": "project_name",
-                "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center"><a href="'+ row.source_url +'" target="_blank">' + data + '</a></div>';
                 }
@@ -154,19 +170,8 @@ function invest(){
         table.ajax.url( '/assigner/invest_json?' + param).load();
     });
 
-
     $('#invest tbody').on( 'click', 'tr', function () {
         $('tr').removeClass('selected');
         $(this).addClass('selected');
-    });
-
-    $('#invest tbody').on( 'click', 'tr', function () {
-        $('tr').removeClass('selected');
-        $(this).addClass('selected');
-    });
-    $(window).load(function () {
-      var select_index = localStorage['select_index'] || '0';
-      select_index = parseInt(select_index)
-      table.row(select_index).nodes().to$().addClass('selected');
     });
 }
