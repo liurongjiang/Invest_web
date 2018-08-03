@@ -1,6 +1,5 @@
 $(document).ready(function() {
     invest()
-    session
 });
 
 var language = {
