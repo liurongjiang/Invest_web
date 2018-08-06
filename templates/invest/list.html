@@ -75,6 +75,27 @@
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="/static/javascripts/data.js"></script>
+
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script>
+        $(function() {
+          $('input[name="investDate"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+              format: 'YYYY-MM-DD'
+            }
+          });
+
+          $('input[name="investDate"]').on('cancel.daterangepicker', function(ev, picker) {
+              $(this).val('');
+          });
+        });
+
+        </script>
+
 </head>
 <body>
     <div id="container" class="box">
@@ -99,7 +120,7 @@
                     <div class="head_filter">
                         <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">投资日期：</label>
                     </div>
-                    <div class="head_filter"><input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="2018-01-01/2018-05-15" value=""></input>
+                    <div class="head_filter"><input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="" value=""></input>
                     </div>
                     <div style="width: 80%"></div>
                 </div>

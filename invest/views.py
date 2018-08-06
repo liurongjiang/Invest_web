@@ -92,11 +92,11 @@ def invest_json():
         dateLs=investDate.split('/')
         startDate=investDateHandler(dateLs[0])
         startTime=date2time(startDate)
-        investInfo = ' finance_time > %s' % startTime
+        investInfo = ' finance_time >= %s' % startTime
         if len(dateLs)==2 and dateLs[1]:
             endDate=investDateHandler(dateLs[1])
             endTime=date2time(endDate)
-            investInfo += ' AND finance_time < %s' % endTime
+            investInfo += ' AND finance_time <= %s' % endTime
         if WHERE: WHERE += ' AND' + investInfo
         else: WHERE += investInfo
 
