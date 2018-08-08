@@ -11,6 +11,12 @@ def query_list(table_name, args):
     KEYWORDS = args.get('keyWords') or None
     INVESTDATE = args.get('investDate') or None
     LIMIT=' LIMIT %s, %s' % (START, LENGTH)
+    order_colum_index=args.get('order[0][column]')
+    ORDER_KEY='finance_time'
+    ORDER_DIR='DESC'
+    if int(order_colum_index):
+        ORDER_KEY=args.get('columns[%s][data]' % order_colum_index)
+        ORDER_DIR=args.get('order[0][dir]')
 
     #1 FROM 
     FROM = ' FROM %s' % table_name
@@ -50,7 +56,7 @@ def query_list(table_name, args):
 
     if WHERES:
         WHERE += ' WHERE ' + ' AND '.join(WHERES)
-    ORDER_BY=' ORDER BY finance_time DESC'
+    ORDER_BY=' ORDER BY %s %s' % (ORDER_KEY, ORDER_DIR)
 
     query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT
     count_sql='SELECT COUNT(1) ' + FROM + WHERE
