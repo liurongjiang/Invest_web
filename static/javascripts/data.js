@@ -149,8 +149,8 @@ function invest(){
         console.log(_class);
         att='.' + _class + '.filter_font'
         $(att).attr('class', _class);
-        $("#keyWords").val("");
-        $("#investDate").val("");
+        //$("#keyWords").val("");
+        //$("#investDate").val("");
         $(this).addClass('filter_font');
 
         var industryId=$(".industry.filter_font").attr("id");
@@ -169,7 +169,7 @@ function invest(){
     $.fn.dataTable.ext.errMode = 'throw';
 
     $("#keyWords").change(function(){
-        $('input[name="investDate"]').val('');
+        //$('input[name="investDate"]').val('');
         var _id = $(this).attr("id");
         var param = "industry=" + $(".industry.filter_font").attr("id");
         param += "&round=" + $(".round.filter_font").attr("id");
