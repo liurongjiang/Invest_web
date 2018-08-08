@@ -97,7 +97,7 @@ function invest(){
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">'+ data +' </div>';
-                }  
+                }
             },
             { "data": "currency",
                 "orderable":      false,
@@ -121,7 +121,7 @@ function invest(){
                         resp += resls[i] + '</br>'
                     }*/
                     return '<div class="center">' + data + '</div>';
-                }  
+                }
             }
       ]
     });
@@ -152,7 +152,7 @@ function invest(){
         $("#keyWords").val("");
         $("#investDate").val("");
         $(this).addClass('filter_font');
-        
+
         var industryId=$(".industry.filter_font").attr("id");
         var roundId=$(".round.filter_font").attr("id");
         var countryId=$(".country.filter_font").attr("id");
@@ -165,21 +165,30 @@ function invest(){
         console.log(param);
         table.ajax.url( '/invest/invest_json?' + param).load();
     });
- 
+
     $.fn.dataTable.ext.errMode = 'throw';
 
-    $("#keyWords,#investDate").change(function(){
+    $("#keyWords").change(function(){
+        $('input[name="investDate"]').val('');
         var _id = $(this).attr("id");
         var param = "industry=" + $(".industry.filter_font").attr("id");
         param += "&round=" + $(".round.filter_font").attr("id");
         param += "&country=" + $(".country.filter_font").attr("id");
-        if(_id=='keyWords'){
-            param += '&keyWords=' + $("#keyWords").val();
-            param += "&investDate=";
-        }else{
-            param += '&investDate=' + $("#investDate").val();
-            param += "&keywords=";
-        }
+        param += '&keyWords=' + $("#keyWords").val();
+        param += "&investDate=";
+        param += "&keywords=";
+        console.log(param);
+        table.ajax.url( '/invest/invest_json?' + param).load();
+    });
+
+    $("#investDate").on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD'));
+        var _id = $(this).attr("id");
+        var param = "industry=" + $(".industry.filter_font").attr("id");
+        param += "&round=" + $(".round.filter_font").attr("id");
+        param += "&country=" + $(".country.filter_font").attr("id");
+        param += '&investDate=' + $("#investDate").val();
+        param += "&keywords=";
         console.log(param);
         table.ajax.url( '/invest/invest_json?' + param).load();
     });
