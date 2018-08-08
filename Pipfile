@@ -7,8 +7,15 @@ name = "pypi"
 flask = "*"
 pyyaml = "*"
 pymysql = "*"
+flask-bcrypt = "*"
+flask-bootstrap = "*"
+flask-wtf = "*"
+flask-sqlalchemy = "*"
+werkzeug = "*"
+pyrad = "*"
 
 [dev-packages]
+pylint = "*"
 
 [requires]
 python_version = "3.6"

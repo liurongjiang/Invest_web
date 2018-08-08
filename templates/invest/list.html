@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>数据查询检索</title>
+        <title>数据查询检索{{name}}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
@@ -74,6 +74,7 @@
         </style>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="/static/javascripts/lib/jquery/jquery-ui-1.10.4..min.js"></script>
         <script type="text/javascript" src="/static/javascripts/data.js"></script>
 
 
@@ -92,8 +93,10 @@
           $('input[name="investDate"]').on('cancel.daterangepicker', function(ev, picker) {
               $(this).val('');
           });
-        });
 
+          $( ".controlgroup" ).controlgroup()
+          
+        });
         </script>
 
 </head>
@@ -105,8 +108,25 @@
                             <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
                             <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
                             <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
-                            <li class="menu-item" data-name="login"><a href="/ejs?__=login">登录</a></li>
-                            <li class="menu-item" data-name="regist"><a href="/ejs?__=regist">注册</a></li>
+                            {% if user.username %}
+                            <div class="controlgroup">
+                            <select id="car-type">
+                               <option>Compact car</option>
+                               <option>Midsize car</option>
+                               <option>Full size car</option>
+                               <option>SUV</option>
+                               <option>Luxury</option>
+                               <option>Truck</option>
+                               <option>Van</option>
+                            </select>  
+                            {{industries}}
+
+                            <li class="menu-item"> {{user.username}} </li>
+                            <li class="menu-item" data-name="logout"><a href="{{ url_for('auth.logout')}}">退出账号</a></li>
+                            {% else %}
+                            <li class="menu-item" data-name="login"><a href="{{ url_for('auth.login')}}">登录</a></li>
+                            <li class="menu-item" data-name="signup"><a href="{{ url_for('auth.signup')}}">注册</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </nav>
