@@ -43,10 +43,10 @@ def query_list(table_name, args):
         WHERES.append(roundInfo)
 
     if REGION:
-        if REGION != '国外':
+        if REGION == '国外':
             WHERES.append('country="国外"')
         elif REGION=='其它':
-            WHERES.append('city_level>10')
+            WHERES.append('country="中国" AND city NOT IN ("北京", "上海", "深圳", "杭州", "广州", "成都", "苏州", "南京", "武汉")')
         else:
             WHERES.append('city="%s"') % REGION
 
