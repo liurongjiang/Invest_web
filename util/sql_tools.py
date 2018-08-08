@@ -52,9 +52,7 @@ def query_list(table_name, args):
         WHERE += ' WHERE ' + ' AND '.join(WHERES)
     ORDER_BY=' ORDER BY finance_time DESC'
 
-    sql=FROM + WHERE + ORDER_BY + LIMIT
-
-    query_sql='SELECT * ' + sql
-    count_sql='SELECT COUNT(1) ' + sql
+    query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT
+    count_sql='SELECT COUNT(1) ' + FROM + WHERE
     print('__sql: ', query_sql)
     return query_sql, count_sql
