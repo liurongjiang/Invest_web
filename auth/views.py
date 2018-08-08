@@ -7,7 +7,30 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from auth import auth
 from run import db, app, login_manager, User
-
+# from pyrad.client import Client
+# from pyrad.dictionary import Dictionary
+# import pyrad.packet
+#
+# srv = Client(server="localhost", secret=b"Kah3choteereethiejeimaeziecumi",
+#              dict=Dictionary("dictionary"))
+#
+# # create request
+# req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest,
+#                            User_Name="wichert", NAS_Identifier="localhost")
+# req["User-Password"] = req.PwCrypt("password")
+#
+# # send request
+# reply = srv.SendPacket(req)
+#
+# if reply.code == pyrad.packet.AccessAccept:
+#     print("access accepted")
+# else:
+#     print("access denied")
+#
+# print("Attributes returned by server:")
+# 
+# for i in reply.keys():
+#     print("%s: %s" % (i, reply[i]))
 class LoginForm(FlaskForm):
     username = StringField('用户名', validators= [InputRequired(),Length(min=4,max=100)])
     password = PasswordField ('密码', validators = [InputRequired(),Length(min=8,max=80)])

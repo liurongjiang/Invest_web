@@ -10,8 +10,10 @@ app=Flask(__name__,
         static_folder='static',  #指定静态文件前缀，默认静态文件路径同前缀
         #static_url_path='/opt/auras/static',     #指定静态文件存放路径。
          )
-Bootstrap(app)
+
+app.config.from_pyfile('config.py', silent=True)
 db = SQLAlchemy(app)
+Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
@@ -26,7 +28,6 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-app.config.from_pyfile('config.py', silent=True)
 
 from invest import invest
 app.register_blueprint(invest, url_prefix='/invest')    #注册asset蓝图，并指定前缀。
@@ -34,4 +35,4 @@ from auth import auth
 app.register_blueprint(auth, url_prefix='/auth')    #注册asset蓝图，并指定前缀。
 
 if __name__=='__main__':
-         app.run(host='0.0.0.0',port=5000, debug=False)  #运行flask http程序，host指定监听IP，port指定监听端口，调试时需要开启debug模式。
+         app.run(host='0.0.0.0',port=5000)  #运行flask http程序，host指定监听IP，port指定监听端口，调试时需要开启debug模式。
