@@ -20,7 +20,7 @@
          }
         </style>
         <style>
-            body{height:100%; overflow:hidden; margin:0px; padding:0px;}
+            body{height:100%; overflow:; margin:0px; padding:0px;}
             .box {height:100%; position:absolute; width:100%;}
             .center {text-align:center}
             .left {text-align:left}
@@ -112,13 +112,15 @@
                     </div>
                 </nav>
             <div id="content-wrapper" class="clearfix row auto">
-                <div>
-                    <div class="head_filter">
+                <div style="width: 100%">
+                    <div class="head_filter" >
                         <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">投资日期：</label>
                     </div>
-                    <div class="head_filter"><input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="" value=""></input>
+                    <div class="head_filter" >
+                        <input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="" value=""></input>
                     </div>
-                    <div style="width: 80%"></div>
+                    <div class="head_filter"><span class="industry filter_font" id="all">最近一周</span></div>
+                    <div class="head_filter"><span class="industry" id="xfsj">最近一月</span></div>
                 </div>
                 </br>
                 <p>
@@ -126,7 +128,7 @@
                 </p>
                 <div width="100%">
                         <div class="head_filter">
-                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">关键词(公司/项目):</label>
+                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">搜索(公司/项目／关键词):</label>
                         </div>
                         <div class="head_filter"><input name="keyWords" style="width: 200px; z-index: 10000;" placeholder="请输入关键词" value="" id="keyWords"></input></div>
                     </div>
@@ -141,6 +143,18 @@
                         <div class="head_filter"><span class="country filter_font" id="all">不限</span></div>
                         <div class="head_filter"><span class="country" id="gn">国内</span></div>
                         <div class="head_filter"><span class="country" id="gw">国外</span></div>
+                    </div>
+                </br>
+                    <div width="100%" hidden>
+                        <div class="head_filter" ><span class="country" id="all" >北京</span></div>
+                        <div class="head_filter" ><span class="country" id="gn" >上海</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >广州</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >深圳</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >杭州</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >成都</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >苏州</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >南京</span></div>
+                        <div class="head_filter" ><span class="country" id="gw" >武汉</span></div>
                     </div>
                     </br>
                     <p>
