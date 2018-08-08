@@ -48,7 +48,9 @@ def invest_list():
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
+    tableName='invest_event_info'
     #orderBy =
+    length=request.args.get('length') or 10
     start = request.args.get('start') or 0
     industry = request.args.get('industry') or None
     _round = request.args.get('round') or None
@@ -56,12 +58,12 @@ def invest_json():
     keyWords = request.args.get('keyWords') or None
     investDate = request.args.get('investDate') or None
 
-    querySql='SELECT * FROM  integrated_company'
-    countSql='SELECT COUNT(1) FROM  integrated_company'
+    querySql='SELECT * FROM ' + tableName
+    countSql='SELECT COUNT(1) FROM ' + tableName
 
     WHERE = ''
     if industry and industry in industry_map:
-        WHERE += ' industry="%s"' % industry_map[industry]
+        WHERE += ' industry_tags="%s"' % industry_map[industry]
     if _round and _round in round_map:
         if _round=='other':
             roundInfo = 'turn_level >= 16'
@@ -100,7 +102,7 @@ def invest_json():
         querySql += ' WHERE' + WHERE
         countSql += ' WHERE' + WHERE
 
-    querySql += ' ORDER BY finance_time DESC LIMIT %s, 10' % start
+    querySql += ' ORDER BY finance_time DESC LIMIT %s, %s' % (start, length)
 
     docs = mysql.query(querySql)
     count = mysql.query(countSql)
