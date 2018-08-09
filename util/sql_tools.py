@@ -47,8 +47,10 @@ def query_list(table_name, args):
             WHERES.append('country="国外"')
         elif REGION=='其它':
             WHERES.append('country="中国" AND city NOT IN ("北京", "上海", "深圳", "杭州", "广州", "成都", "苏州", "南京", "武汉")')
+        elif REGION=='国内':
+            WHERES.append('country="中国"')
         else:
-            WHERES.append('city="%s"') % REGION
+            WHERES.append('city="%s"' % REGION)
 
     if KEYWORDS:
         keyInfo = ' (project_name LIKE "%'+ KEYWORDS.strip() + '%" OR company_name like"%'+ KEYWORDS.strip() +'%")'

@@ -75,6 +75,7 @@
         </style>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="/static/javascripts/moment.js"></script>
         <script type="text/javascript" src="/static/javascripts/data.js"></script>
 
 
@@ -119,8 +120,8 @@
                     <div class="head_filter" >
                         <input name="investDate" style="width: 200px; z-index: 10000;" id="investDate" placeholder="" value=""></input>
                     </div>
-                    <div class="head_filter"><span class="industry filter_font" id="all">最近一周</span></div>
-                    <div class="head_filter"><span class="industry" id="xfsj">最近一月</span></div>
+                    <button style="display:inline;" id='lastWeekBtn'>上周</button>
+                    <button style="display:inline;" id='lastMonthBtn'>上个月</button>
                 </div>
                 </br>
                 <p>
@@ -138,44 +139,47 @@
                     </p>
                 <div width="100%">
                         <div class="head_filter">
-                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">区域：</label>
+                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">区域：</label><br>
                         </div>
-                        <div class="head_filter"><span class="country filter_font" id="all">不限</span></div>
-                        <div class="head_filter"><span class="country" id="gn">国内</span></div>
-                        <div class="head_filter"><span class="country" id="gw">国外</span></div>
-                    </div>
+                        <div class="head_filter"><span class="region filter_font" value='不限' id = 'regionAll' >不限</span></div>
+                        <div class="head_filter"><span class="region" value='国内' id = 'regionChina' >国内</span></div>
+                        <div class="head_filter"><span class="region" value='国外'  id = 'regionOverseas'>国外</span></div>
+                </div>
+                <div id='cityDiv' width="100%" style="display:none">
                 </br>
-                    <div width="100%" hidden>
-                        <div class="head_filter" ><span class="country" id="all" >北京</span></div>
-                        <div class="head_filter" ><span class="country" id="gn" >上海</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >广州</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >深圳</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >杭州</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >成都</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >苏州</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >南京</span></div>
-                        <div class="head_filter" ><span class="country" id="gw" >武汉</span></div>
-                    </div>
-                    </br>
                     <p>
                         <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
+                            <div class="head_filter" ><span class="region" value='北京' >北京</span></div>
+                            <div class="head_filter" ><span class="region" value='上海' >上海</span></div>
+                            <div class="head_filter" ><span class="region" value='广州' >广州</span></div>
+                            <div class="head_filter" ><span class="region" value='深圳' >深圳</span></div>
+                            <div class="head_filter" ><span class="region" value='杭州' >杭州</span></div>
+                            <div class="head_filter" ><span class="region" value='成都' >成都</span></div>
+                            <div class="head_filter" ><span class="region" value='苏州' >苏州</span></div>
+                            <div class="head_filter" ><span class="region" value='南京' >南京</span></div>
+                            <div class="head_filter" ><span class="region" value='武汉' >武汉</span></div>
+                            <div class="head_filter" ><span class="region" value='其它' >其它</span></div>
+                        
                     </p>
+                </div>
+                </br>
+                <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
                 <div width="100%">
                     <div class="head_filter">
                         <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">投资轮次：</label>
                     </div>
-                    <div class="head_filter"><span class="round filter_font" id="all">不限</span></div>
-                    <div class="head_filter"><span class="round" id="zhongzi">种子轮</span></div>
-                    <div class="head_filter"><span class="round" id="tianshi">天使轮</span></div>
-                    <div class="head_filter"><span class="round" id="pre_a">Pre-A轮</span></div>
-                    <div class="head_filter"><span class="round" id="a">A轮</span></div>
-                    <div class="head_filter"><span class="round" id="a_add">A+轮</span></div>
-                    <div class="head_filter"><span class="round" id="pre_b">Pre-B轮</span></div>
-                    <div class="head_filter"><span class="round" id="b">B轮</span></div>
-                    <div class="head_filter"><span class="round" id="b_add">B+轮</span></div>
-                    <div class="head_filter"><span class="round" id="c">C轮</span></div>
-                    <div class="head_filter"><span class="round" id="d">D轮</span></div>
-                    <div class="head_filter"><span class="round" id="other">其它</span></div>
+                    <div class="head_filter"><span class="round filter_font" value= '不限'>不限</span></div>
+                    <div class="head_filter"><span class="round" value= '种子轮'>种子轮</span></div>
+                    <div class="head_filter"><span class="round" value= '天使轮'>天使轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'Pre-A轮'>Pre-A轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'A轮'>A轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'A+轮'>A+轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'Pre-B轮'>Pre-B轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'B轮'>B轮</span></div>
+                    <div class="head_filter"><span class="round" value= '>B+轮'>B+轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'C轮'>C轮</span></div>
+                    <div class="head_filter"><span class="round" value= 'D轮'>D轮</span></div>
+                    <div class="head_filter"><span class="round" value= '其它'>其它</span></div>
                 </div>
                 </br>
                 <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
@@ -183,16 +187,16 @@
                     <div class="head_filter">
                         <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">所属行业：</label>
                     </div>
-                    <div class="head_filter"><span class="industry filter_font" id="all">不限</span></div>
-                    <div class="head_filter"><span class="industry" id="xfsj">消费升级</span></div>
-                    <div class="head_filter"><span class="industry" id="xjs">新技术</span></div>
-                    <div class="head_filter"><span class="industry" id="qyfw">企业服务</span></div>
-                    <div class="head_filter"><span class="industry" id="whyl">文娱+移动2C</span></div>
-                    <div class="head_filter"><span class="industry" id="jr">互联网金融</span></div>
-                    <div class="head_filter"><span class="industry" id="yl">医疗</span></div>
-                    <div class="head_filter"><span class="industry" id="jy">教育</span></div>
-                    <div class="head_filter"><span class="industry" id="dcx">大出行</span></div>
-                    <div class="head_filter"><span class="industry" id="other">其它</span></div>
+                    <div class="head_filter"><span class="industry filter_font" value='不限'>不限</span></div>
+                    <div class="head_filter"><span class="industry" value='消费升级' >消费升级</span></div>
+                    <div class="head_filter"><span class="industry" value='新技术' >新技术</span></div>
+                    <div class="head_filter"><span class="industry" value='企业服务' >企业服务</span></div>
+                    <div class="head_filter"><span class="industry" value='文娱+移动2C' >文娱+移动2C</span></div>
+                    <div class="head_filter"><span class="industry" value='互联网金融' >互联网金融</span></div>
+                    <div class="head_filter"><span class="industry" value='医疗' >医疗</span></div>
+                    <div class="head_filter"><span class="industry" value='教育' >教育</span></div>
+                    <div class="head_filter"><span class="industry" value='大出行' >大出行</span></div>
+                    <div class="head_filter"><span class="industry" value='其它' >其它</span></div>
                 </div>
                 </br>
                 <p>
@@ -203,13 +207,13 @@
                         <thead>
                             <tr>
                                 <th width="8%"></th>
-                                <th width="8%">项目简介</th>
-                                <th width="10%">项目名称</th>
+                                <th width="13%">项目简介</th>
+                                <th width="15%">项目名称</th>
                                 <th width="10%">融资日期</th>
                                 <th width="10%">融资轮次</th>
                                 <th width="10%">融资金额</th>
                                 <th width="10%">币种</th>
-                                <th width="20%">企业名称</th>
+                                <th width="10%">区域</th>
                                 <th width="14%">行业分类</th>
                             </tr>
                         </thead>
