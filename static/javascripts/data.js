@@ -19,15 +19,16 @@ function format(d){
     console.log(d)
     // `d` is the original data object for the row
     table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width="100%"><tr width="100%s" style="background-color:rgb(215, 221, 219); ">';
-    table += '<td width="7%" ></td>';
-    table += '<td width="8%" ><p><span style="color:red;">城市: &nbsp;&nbsp;</span>'+ d['city'] +'</p></td>';
-    table += '<td width="52%" ><p><span style="color:red;">项目简介: &nbsp;&nbsp;</span>'+ d['introduction'] +'</p></td>';
-    table += '<td width="20%" ><p><span style="color:red;">投资方: &nbsp;&nbsp;</span>'+ d['institution'] +'</p></td>';
-    table += '<td width="13%" ></td>';
+    table += '<td width="8%" ></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="12%"><span style="color:red;">企业名称: &nbsp;&nbsp;<br></span>'+ d['company_name'] +'</td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="52%" ><p><span style="color:red;">项目简介: &nbsp;&nbsp;<br></span>'+ d['introduction'] +'</p></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="20%" ><p><span style="color:red;">投资方: &nbsp;&nbsp;<br></span>'+ d['institution'] +'</p></td>';
+    table += '<td width="8%" ></td>';
     table += '</tr></table>';
 
     return table;
 }
+
 
 $(document).ready(function() {
     invest();
@@ -48,6 +49,7 @@ function hide_show(curr_ele){
 }
 
 function invest(){
+
     var table = $('#invest').DataTable({
       "searching": false,
       "processing": true,
@@ -105,13 +107,13 @@ function invest(){
                     return '<div class="center">' + data + '</div>';
                 }
             },
-            { "data": "company_name",
+            { "data": "city",
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
                 }
             },
-            { "data": "industry",
+            { "data": "industry_tags",
                 "orderable":      false,
                 "render": function (data, type, row) {
                     /*
@@ -144,52 +146,91 @@ function invest(){
     // $(".a.b") 且
     // $(".a, .b") 或
     // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
-    $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']").click(function(){
+    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round']").click(function(){
         var _class = $(this).attr("class");
         console.log(_class);
-        att='.' + _class + '.filter_font'
+        att='.' + _class + '.filter_font';
         $(att).attr('class', _class);
-        //$("#keyWords").val("");
-        //$("#investDate").val("");
         $(this).addClass('filter_font');
-
-        var industryId=$(".industry.filter_font").attr("id");
-        var roundId=$(".round.filter_font").attr("id");
-        var countryId=$(".country.filter_font").attr("id");
-        var param = "industry=" + industryId;
-        param += "&round=" + roundId;
-        param += "&country=" + countryId;
-
-        param += "&keywords=";
-        param += "&investDate=";
-        console.log(param);
-        table.ajax.url( '/invest/invest_json?' + param).load();
+        passParams();
     });
 
     $.fn.dataTable.ext.errMode = 'throw';
 
     $("#keyWords").change(function(){
-        //$('input[name="investDate"]').val('');
-        var _id = $(this).attr("id");
-        var param = "industry=" + $(".industry.filter_font").attr("id");
-        param += "&round=" + $(".round.filter_font").attr("id");
-        param += "&country=" + $(".country.filter_font").attr("id");
-        param += '&keyWords=' + $("#keyWords").val();
-        param += "&investDate=";
-        param += "&keywords=";
-        console.log(param);
-        table.ajax.url( '/invest/invest_json?' + param).load();
+        passParams();
+    });
+    $("#regionAll").click(function () {
+        document.getElementById("cityDiv").style.display = 'none';
+    });
+    $("#regionOverseas").click(function () {
+        document.getElementById("cityDiv").style.display = 'none';
+    });
+    $("#regionChina").click(function () {
+        document.getElementById("cityDiv").style.display = 'block';
+    });
+    
+    $("#investDate").on('apply.daterangepicker', function (ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
+        passParams();
     });
 
     $("#investDate").on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD'));
-        var _id = $(this).attr("id");
-        var param = "industry=" + $(".industry.filter_font").attr("id");
-        param += "&round=" + $(".round.filter_font").attr("id");
-        param += "&country=" + $(".country.filter_font").attr("id");
-        param += '&investDate=' + $("#investDate").val();
-        param += "&keywords=";
-        console.log(param);
-        table.ajax.url( '/invest/invest_json?' + param).load();
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
+        passParams();
     });
+
+    $("#lastWeekBtn").click(function () {
+        today = moment();
+        var daysFromLastFriday = today.day() + 2;
+        var daysFromLastLastSat = daysFromLastFriday + 6;
+        var LastLastSat = moment().subtract(daysFromLastLastSat, 'days');
+        var lastFriday = moment().subtract(daysFromLastFriday, 'days');
+        var start = LastLastSat.format('YYYY-MM-DD');
+        var end = lastFriday.format('YYYY-MM-DD');
+        var res = start + ' / ' + end;
+        $("#investDate").val(res);
+        passParams();
+    });
+
+   $("#lastMonthBtn").click(function () {
+        today = moment();
+        var start = moment(today).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+        var end = moment(today).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+        var res = start + ' / ' + end;
+        $("#investDate").val(res);
+        passParams();
+   });
+    
+    function passParams() {
+        var industryId = $(".industry.filter_font").attr("value");
+        var roundId = $(".round.filter_font").attr("value");
+        var regionId = $(".region.filter_font").attr("value");
+        var keyWords = $("#keyWords").val();
+        var investDate = $("#investDate").val();
+
+        var param = "";
+        if (industryId != '不限') {
+            param += param ? '&' : '';
+            param += "industry=" + industryId;
+        }
+        if (roundId != '不限') {
+            param += param ? '&' : '';
+            param += "round=" + roundId;
+        }
+        if (regionId != '不限') {
+            param += param ? '&' : '';
+            param += "region=" + regionId;
+        }
+        if (keyWords) {
+            param += param ? '&' : '';
+            param += "keyWords=" + keyWords;
+        }
+        if (investDate) {
+            param += param ? '&' : '';
+            param += "investDate=" + investDate;
+        }
+        console.log(param);
+        table.ajax.url('/invest/invest_json?' + param).load();
+    }
 }
