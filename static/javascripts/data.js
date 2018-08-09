@@ -154,9 +154,6 @@ function invest(){
         $(this).addClass('filter_font');
         passParams();
     });
-    // $("span[class='region chinaRegionSpan']").click(function () {
-    //     console.log('hello');
-    // });
 
     $.fn.dataTable.ext.errMode = 'throw';
 
