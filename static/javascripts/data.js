@@ -20,9 +20,9 @@ function format(d){
     // `d` is the original data object for the row
     table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width="100%"><tr width="100%s" style="background-color:rgb(215, 221, 219); ">';
     table += '<td width="8%" ></td>';
-    table += '<td width="12%" ><p><span style="color:red;">企业名称: &nbsp;&nbsp;<br></span>'+ d['company_name'] +'</p></td>';
-    table += '<td width="52%" ><p><span style="color:red;">项目简介: &nbsp;&nbsp;</span>'+ d['introduction'] +'</p></td>';
-    table += '<td width="20%" ><p><span style="color:red;">投资方: &nbsp;&nbsp;</span>'+ d['institution'] +'</p></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="12%"><span style="color:red;">企业名称: &nbsp;&nbsp;<br></span>'+ d['company_name'] +'</td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="52%" ><p><span style="color:red;">项目简介: &nbsp;&nbsp;<br></span>'+ d['introduction'] +'</p></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="20%" ><p><span style="color:red;">投资方: &nbsp;&nbsp;<br></span>'+ d['institution'] +'</p></td>';
     table += '<td width="8%" ></td>';
     table += '</tr></table>';
 
@@ -174,12 +174,12 @@ function invest(){
     });
     
     $("#investDate").on('apply.daterangepicker', function (ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD'));
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
         passParams();
     });
 
     $("#investDate").on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD') + '/' + picker.endDate.format('YYYY-MM-DD'));
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
         passParams();
     });
 
@@ -191,7 +191,7 @@ function invest(){
         var lastFriday = moment().subtract(daysFromLastFriday, 'days');
         var start = LastLastSat.format('YYYY-MM-DD');
         var end = lastFriday.format('YYYY-MM-DD');
-        var res = start + '/' + end;
+        var res = start + ' / ' + end;
         $("#investDate").val(res);
         passParams();
     });
@@ -200,7 +200,7 @@ function invest(){
         today = moment();
         var start = moment(today).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
         var end = moment(today).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-        var res = start + '/' + end;
+        var res = start + ' / ' + end;
         $("#investDate").val(res);
         passParams();
    });
