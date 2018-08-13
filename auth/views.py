@@ -27,7 +27,7 @@ def login():
         srv = Client(server=server, secret=secret,dict=Dictionary("dictionary.py"))
             
         # create request
-        req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest, User_Name=form.username.data NAS_Identifier=nas_id)
+        req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest, User_Name=form.username.data, NAS_Identifier=nas_id)
         req["User-Password"] = req.PwCrypt(form.password.data)
         
         # send request
