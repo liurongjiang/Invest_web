@@ -20,9 +20,9 @@ login_manager.login_view = 'auth.login'
 
 
 class User(UserMixin, db.Model):
+    from run import db
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
-    email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(80))
 
 
@@ -38,4 +38,4 @@ app.register_blueprint(auth, url_prefix='/auth')  # 注册asset蓝图，并指�
 
 if __name__ == '__main__':
          # 运行flask http程序，host指定监听IP，port指定监听端口，调试时需要开启debug模式。
-         app.run(host='0.0.0.0', port=5000)
+         app.run(host='0.0.0.0', port=5000,debug=True)
