@@ -1,7 +1,7 @@
 #coding=utf-8
 import re, json, yaml
+import util.sql_tools 
 from invest import invest
-from util.sql_tools import *
 from flask import request, render_template
 from database.my_mysql import MysqlHandle
 

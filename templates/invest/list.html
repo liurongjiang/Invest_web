@@ -112,6 +112,7 @@
                                 <li class="menu-item" data-name="logout"><a href=<a href="{{url_for('auth.logout')}}">退出账号</a></li>
                             {% else %}
                                 <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </nav>
