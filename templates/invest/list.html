@@ -64,17 +64,20 @@
         .show {
             display: block;
         }
-            body{height:100%; overflow:; margin:0px; padding:0px;}
-            .box {height:100%; position:absolute; width:100%;}
-            .center {text-align:center}
-            .left {text-align:left}
-            .auto_data {
-                   overflow: auto;
-            }
-            .auto {
-                   height: 88%;
-                   overflow: auto;
-            }
+        .menu{
+            width:100%;
+        }
+        body{height:100%; overflow:; margin:0px; padding:0px;}
+        .box {height:100%; position:absolute; width:100%;}
+        .center {text-align:center}
+        .left {text-align:left}
+        .auto_data {
+                overflow: auto;
+        }
+        .auto {
+                height: 88%;
+                overflow: auto;
+        }
         .dataTables_length{
             margin: 0 23px;
         }
@@ -160,27 +163,29 @@
 <body>
     <div id="container" class="box">
             <nav id="main" class="constrain clearfix">
-                    <div class="menu-top-container">
-                        <ul id="menu-top" class="menu">
-                            <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
-                            <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
-                            <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
-                            <li class="menu-item" data-name="servinfo">
-                            {% if user.username %}
-                                <div class="dropdown">
-                                    <button class="dropbtn" onclick="usernameFunction()">{{user.username}}
-                                        <i class="fa fa-caret-down"></i>
-                                    </button>
-                                    <div class="dropdown-content" id="usernameDropdown">
-                                        <a href="{{url_for('auth.logout')}}">退出账号</a>
-                                    </div>
+                <div class="menu-top-container">
+                    <ul id="menu-top" class="menu">
+                        <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
+                        <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
+                        <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
+                        <li class="menu-item" data-name="servinfo">
+                        {% if user.username %}
+                        <li class="menu-item" style='float:right;'>
+                            <div class="dropdown">
+                                <button class="dropbtn" onclick="usernameFunction()">{{user.username}}
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="usernameDropdown">
+                                    <a href="{{url_for('auth.logout')}}">退出账号</a>
                                 </div>
-                            {% else %}
-                                <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </nav>
+                            </div>
+                        </li>
+                        {% else %}
+                            <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
             <div id="content-wrapper" class="clearfix row auto">
                 <div style="width: 100%">
                     <div class="head_filter" >
@@ -289,32 +294,7 @@
                         </tbody>
                     </table>
                 </div>
-                    <div id="jq-dropdown-1" class="jq-dropdown jq-dropdown-tip">
-                        <ul class="jq-dropdown-menu">
-                            <li>
-                                <a href="#1">Item 1</a>
-                            </li>
-                            <li>
-                                <a href="#2">Item 2</a>
-                            </li>
-                            <li>
-                                <a href="#3">Item 3</a>
-                            </li>
-                            <li class="jq-dropdown-divider"></li>
-                            <li>
-                                <a href="#4">Item 4</a>
-                            </li>
-                            <li>
-                                <a href="#5">Item 5</a>
-                            </li>
-                            <li>
-                                <a href="#5">Item 6</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <a href="#" data-jq-dropdown="#jq-dropdown-1">Here’s a link</a>
-                </div>
-        </div>
+            </div>
     </div>
 </body>
 </html>
