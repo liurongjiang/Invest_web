@@ -18,12 +18,16 @@ class LoginForm(FlaskForm):
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
+    server = app.config['AUTH_SERVER']
+    secret = app.config['AUTH_SECRET']
+    nas_id = app.config['NAS_ID']
+
     form  = LoginForm()
     if  form.validate_on_submit():
-        srv = Client(server="192.168.1.52", secret=b"matrixchina",dict=Dictionary("dictionary.py"))
+        srv = Client(server=server, secret=secret,dict=Dictionary("dictionary.py"))
             
         # create request
-        req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest, User_Name=form.username.data, NAS_Identifier="192.168.1.52")
+        req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest, User_Name=form.username.data NAS_Identifier=nas_id)
         req["User-Password"] = req.PwCrypt(form.password.data)
         
         # send request
@@ -39,6 +43,7 @@ def login():
                 db.session.add(new_user)
                 db.session.commit()
                 login_user(new_user, remember=form.remember.data)
+            return redirect(url_for('asset.invest_list'))
         else:
             print("access denied")
             flash('用户名或密码错误，请重新登陆')
@@ -49,29 +54,6 @@ def login():
             print("%s: %s" % (i, reply[i]))
             
     return render_template('auth/login.html',form = form)
-
-@auth.route('/signup', methods=['GET', 'POST'])
-def signup():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            flash('用户名已存在，请填写新的用户名')
-            return redirect(url_for('auth.signup'))
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            flash('电子邮箱已存在，请填写新的电子邮箱')
-            return redirect(url_for('auth.signup'))
-        hashed_password = generate_password_hash(
-            form.password.data, method='sha256')
-        new_user = User(username=form.username.data,
-                        email=form.email.data, password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('账号创建成功，请登陆')
-        return redirect(url_for('auth.login'))
-
-    return render_template('auth/signup.html', form=form)
 
 @auth.route('/logout')
 def logout():
