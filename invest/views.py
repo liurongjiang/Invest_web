@@ -3,10 +3,9 @@ import re, json, yaml
 from invest import invest
 from util.sql_tools import *
 from flask import request, render_template
-from database.my_mysql import MysqlHandle
+from database.mysql_tool import MysqlHandler
 
-mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
-mysql=MysqlHandle(mysql_settings)
+mysql=MysqlHandler()
 
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 def invest_list():
