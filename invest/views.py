@@ -1,16 +1,18 @@
 #coding=utf-8
 import re, json, yaml
+import util.sql_tools 
 from invest import invest
-from util.sql_tools import *
 from flask import request, render_template
-from database.mysql_tool import MysqlHandler
+from database.my_mysql import MysqlHandle
 
-mysql=MysqlHandler()
+mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
+mysql=MysqlHandle(mysql_settings)
+from flask_login import current_user
 
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 def invest_list():
     print('__name__', __name__)
-    return render_template('invest/list.html')  #返回index.html模板，路径默认在templates下
+    return render_template('invest/list.html',user=current_user)  #返回index.html模板，路径默认在templates下
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():

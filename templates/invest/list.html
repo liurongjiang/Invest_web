@@ -107,8 +107,11 @@
                             <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
                             <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
                             <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
-                            <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
-                            <li class="menu-item" data-name="regist"><a href="/ejs?__=regist">注册</a></li>
+                            {% if user.username %}
+                                <li class="menu-item" data-name="username">user.username</li>
+                                <li class="menu-item" data-name="logout"><a href=<a href="{{url_for('auth.logout')}}">退出账号</a></li>
+                            {% else %}
+                                <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
                         </ul>
                     </div>
                 </nav>
