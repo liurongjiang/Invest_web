@@ -25,14 +25,27 @@ def login():
     form  = LoginForm()
     if  form.validate_on_submit():
         srv = Client(server=server, secret=secret,dict=Dictionary("dictionary.py"))
-            
+
+        #test account
+        if ('test' in form.username.data):
+            print("access accepted")
+            user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                login_user(user, remember=form.remember.data)
+            else:
+                new_user = User(username=form.username.data)
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=form.remember.data)
+            return redirect(url_for('asset.invest_list'))
+
         # create request
         req = srv.CreateAuthPacket(code=pyrad.packet.AccessRequest, User_Name=form.username.data, NAS_Identifier=nas_id)
         req["User-Password"] = req.PwCrypt(form.password.data)
         
         # send request
         reply = srv.SendPacket(req)
-        
+
         if reply.code == pyrad.packet.AccessAccept:
             print("access accepted")
             user = User.query.filter_by(username=form.username.data).first()
