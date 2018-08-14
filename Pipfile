@@ -7,6 +7,9 @@ name = "pypi"
 flask = "*"
 pyyaml = "*"
 pymysql = "*"
+flask-wtf = "*"
+pyrad = "*"
+flask-sqlalchemy = "*"
 
 [dev-packages]
 "autopep8" = "*"

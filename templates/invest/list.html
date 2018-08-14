@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,6 +7,7 @@
         <meta name="viewport" content="width=device-width">
         <link rel='stylesheet' href='/static/stylesheets/style.css'/>
         <link rel="stylesheet" type="text/css" href="/static/stylesheets/jquery.dataTables.min.css">
+
         <style type="text/css" title="currentStyle">
          @import "/static/stylesheets/jquery-ui.css";
          @import "/static/stylesheets/jquery-base.css";
@@ -20,17 +20,60 @@
          }
         </style>
         <style>
-            body{height:100%; overflow:; margin:0px; padding:0px;}
-            .box {height:100%; position:absolute; width:100%;}
-            .center {text-align:center}
-            .left {text-align:left}
-            .auto_data {
-                   overflow: auto;
-            }
-            .auto {
-                   height: 88%;
-                   overflow: auto;
-            }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .dropbtn {
+            cursor: pointer;
+            font-size: 16px;    
+            border: none;
+            outline: none;
+            color: lightblue;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+            background-color: darkgrey;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: grey;
+            color: black;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .show {
+            display: block;
+        }
+        body{height:100%; overflow:; margin:0px; padding:0px;}
+        .box {height:100%; position:absolute; width:100%;}
+        .center {text-align:center}
+        .left {text-align:left}
+        .auto_data {
+                overflow: auto;
+        }
+        .auto {
+                height: 88%;
+                overflow: auto;
+        }
         .dataTables_length{
             margin: 0 23px;
         }
@@ -83,35 +126,60 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
         <script>
-        $(function() {
-          $('input[name="investDate"]').daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-              format: 'YYYY-MM-DD'
+             function usernameFunction() {
+                document.getElementById("usernameDropdown").classList.toggle("show");
             }
-          });
 
-          $('input[name="investDate"]').on('cancel.daterangepicker', function(ev, picker) {
-              $(this).val('');
-          });
-        });
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (e) {
+                if (!e.target.matches('.dropbtn')) {
+                    var myDropdown = document.getElementById("usernameDropdown");
+                    if (myDropdown.classList.contains('show')) {
+                        myDropdown.classList.remove('show');
+                    }
+                }
+            }
+            $(function() {
+            $('input[name="investDate"]').daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                format: 'YYYY-MM-DD'
+                }
+            });
 
+            $('input[name="investDate"]').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+            });
+            });
         </script>
 
 </head>
 <body>
     <div id="container" class="box">
             <nav id="main" class="constrain clearfix">
-                    <div class="menu-top-container">
-                        <ul id="menu-top" class="menu">
-                            <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
-                            <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
-                            <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
-                            <li class="menu-item" data-name="login"><a href="/ejs?__=login">登录</a></li>
-                            <li class="menu-item" data-name="regist"><a href="/ejs?__=regist">注册</a></li>
-                        </ul>
-                    </div>
-                </nav>
+                <div class="menu-top-container">
+                    <ul id="menu-top" class="menu" style='width:100%;'>
+                        <li class="menu-item" data-name="servinfo"><a href="/logout">项目/公司</a></li>
+                        <li class="menu-item current" data-name="servinfo"><a>投融资事件</a></li>
+                        <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
+                        <li class="menu-item" data-name="servinfo">
+                        {% if user.username %}
+                        <li class="menu-item" style='float:right;'>
+                            <div class="dropdown">
+                                <button class="dropbtn" onclick="usernameFunction()">{{user.username}}
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="usernameDropdown">
+                                    <a href="{{url_for('auth.logout')}}">退出账号</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% else %}
+                            <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
             <div id="content-wrapper" class="clearfix row auto">
                 <div style="width: 100%">
                     <div class="head_filter" >
@@ -220,7 +288,7 @@
                         </tbody>
                     </table>
                 </div>
-        </div>
+            </div>
     </div>
 </body>
 </html>

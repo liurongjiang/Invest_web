@@ -1,1 +1,4 @@
 *.pyc
+/yamls
+config.py
+test.js
