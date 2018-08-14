@@ -12,7 +12,6 @@ from flask_login import current_user,login_required
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
 @login_required
 def invest_list():
-    login_manager.login_message = u"需要以经纬邮箱登陆才能采访这页面"
     print('__name__', __name__)
     return render_template('invest/list.html',user=current_user)  #返回index.html模板，路径默认在templates下
 
