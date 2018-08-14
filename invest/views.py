@@ -7,9 +7,10 @@ from database.my_mysql import MysqlHandle
 
 mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
 mysql=MysqlHandle(mysql_settings)
-from flask_login import current_user
+from flask_login import current_user,login_required
 
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
+@login_required
 def invest_list():
     print('__name__', __name__)
     return render_template('invest/list.html',user=current_user)  #返回index.html模板，路径默认在templates下
