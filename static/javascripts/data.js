@@ -16,7 +16,12 @@ var language = {
 }
 
 function format(d){
-    console.log(d)
+    console.log(d);
+    $.ajax({
+        url: '/invest/log/check_record/'+d.id,
+    }).done(function () {
+        console.log('logged!');
+    });
     // `d` is the original data object for the row
     table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width="100%"><tr width="100%s" style="background-color:rgb(215, 221, 219); ">';
     table += '<td width="8%" ></td>';
@@ -46,6 +51,7 @@ function hide_show(curr_ele){
             console.log(err)
         }
     }, this);
+
 }
 
 function invest(){
