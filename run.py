@@ -17,6 +17,7 @@ Bootstrap(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
+login_manager.login_message = u"需要以经纬邮箱登陆才能采访这页面"
 
 
 class User(UserMixin, db.Model):
