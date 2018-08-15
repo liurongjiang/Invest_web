@@ -8,6 +8,7 @@ def query_list(table_name, args):
     INDUSTRY = args.get('industry') or None
     ROUND = args.get('round') or None
     REGION = args.get('region') or None
+    SOURCE = args.get('source') or None
     KEYWORDS = args.get('keyWords') or None
     INVESTDATE = args.get('investDate') or None
     LIMIT=' LIMIT %s, %s' % (START, LENGTH)
@@ -51,6 +52,13 @@ def query_list(table_name, args):
             WHERES.append('country="中国"')
         else:
             WHERES.append('city="%s"' % REGION)
+    
+    if SOURCE:
+        if SOURCE == '工商':
+            WHERES.append('source="%s"' % SOURCE)
+        else:
+            WHERES.append('source !="工商"')
+
 
     if KEYWORDS:
         keyInfo = ' (project_name LIKE "%'+ KEYWORDS.strip() + '%" OR company_name like"%'+ KEYWORDS.strip() +'%")'

@@ -91,6 +91,13 @@ function invest(){
                     return '<div class="center"><a href="'+ row.source_url +'" target="_blank">' + data + '</a></div>';
                 }
             },
+            {
+                "data": "source",
+                "orderable": false,
+                "render": function (data, type, row) {
+                    return '<div class="center">' + data + '</div>';    
+                }
+            },
             { "data": "finance_date",
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
@@ -152,7 +159,7 @@ function invest(){
     // $(".a.b") 且
     // $(".a, .b") 或
     // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
-    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round']").click(function(){
+    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round'],[class='source']").click(function(){
         var _class = $(this).attr("class");
         console.log(_class);
         att='.' + _class + '.filter_font';
@@ -175,6 +182,15 @@ function invest(){
     $("#regionChina").click(function () {
         document.getElementById("cityDiv").style.display = 'block';
     });
+    // $("#sourceAll").click(function () {
+    //     document.getElementById("sourceDiv").style.display = 'none';
+    // });
+    // $("#sourceGongshang").click(function () {
+    //     document.getElementById("sourceDiv").style.display = 'none';
+    // });
+    // $("#sourceCrawler").click(function () {
+    //     document.getElementById("sourceDiv").style.display = 'block';
+    // });
     
     $("#investDate").on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
@@ -212,6 +228,7 @@ function invest(){
         var industryId = $(".industry.filter_font").attr("value");
         var roundId = $(".round.filter_font").attr("value");
         var regionId = $(".region.filter_font").attr("value");
+        var sourceId = $(".source.filter_font").attr("value");
         var keyWords = $("#keyWords").val();
         var investDate = $("#investDate").val();
 
@@ -227,6 +244,10 @@ function invest(){
         if (regionId != '不限') {
             param += param ? '&' : '';
             param += "region=" + regionId;
+        }
+        if (sourceId != '不限') {
+            param += param ? '&' : '';
+            param += "source=" + sourceId;
         }
         if (keyWords) {
             param += param ? '&' : '';
