@@ -1,5 +1,5 @@
 #coding=utf-8
-import re, json, yaml
+import re, json, yaml, logging
 from invest import invest
 from util.sql_tools import *
 from flask import request, render_template
@@ -9,6 +9,12 @@ from database.mysql_tool import MysqlHandler
 #mysql=MysqlHandle(mysql_settings)
 from flask_login import current_user,login_required
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+formatter = logging.Formatter('%(name)s:%(levelname)s:%(asctime)s:%(message)s')
+file_handler = logging.FileHandler('logs/invest.log')
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
 mysql=MysqlHandler()
 
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
@@ -38,3 +44,9 @@ def invest_json():
 @invest.route('/test', methods=('GET', 'POST'))
 def test():
     return '1111'
+
+
+@invest.route('/log/check_record/<int:record_id>', methods=('GET', 'POST'))
+def check_record(record_id):
+    logger.info('{} checked record_id {}'.format(current_user.username, str(record_id)))
+    return 'success'
