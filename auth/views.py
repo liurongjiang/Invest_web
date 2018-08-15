@@ -4,7 +4,6 @@ from flask import request, render_template, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length, EqualTo
-# from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from auth import auth
@@ -21,7 +20,6 @@ file_handler = logging.FileHandler('logs/auth.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# logging.basicConfig(filename = 'test.log',level=logging.DEBUG, format='%(name)s:%(levelname)s:%(asctime)s:%(message)s')
 class LoginForm(FlaskForm):
     username = StringField('电子邮箱', validators=[InputRequired(), Email(message='请用邮箱'), Length(max=100)])
     password = PasswordField ('密码', validators = [InputRequired(),Length(min=8,max=80)])

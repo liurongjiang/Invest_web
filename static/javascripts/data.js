@@ -55,6 +55,10 @@ function hide_show(curr_ele){
 }
 
 function invest(){
+    var sourceMap = {};
+    sourceMap.xiniu = "稀牛";
+    sourceMap.itjuzi = "IT桔子";
+    sourceMap.jz36k= "鲸准";
 
     var table = $('#invest').DataTable({
       "searching": false,
@@ -89,6 +93,13 @@ function invest(){
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center"><a href="'+ row.source_url +'" target="_blank">' + data + '</a></div>';
+                }
+            },
+            {
+                "data": "source",
+                "orderable": false,
+                "render": function (data, type, row) {
+                    return '<div class="center">' + sourceMap[data] + '</div>';    
                 }
             },
             { "data": "finance_date",
@@ -152,7 +163,7 @@ function invest(){
     // $(".a.b") 且
     // $(".a, .b") 或
     // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
-    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round']").click(function(){
+    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round'],[class='source']").click(function(){
         var _class = $(this).attr("class");
         console.log(_class);
         att='.' + _class + '.filter_font';
@@ -212,6 +223,7 @@ function invest(){
         var industryId = $(".industry.filter_font").attr("value");
         var roundId = $(".round.filter_font").attr("value");
         var regionId = $(".region.filter_font").attr("value");
+        var sourceId = $(".source.filter_font").attr("value");
         var keyWords = $("#keyWords").val();
         var investDate = $("#investDate").val();
 
@@ -227,6 +239,10 @@ function invest(){
         if (regionId != '不限') {
             param += param ? '&' : '';
             param += "region=" + regionId;
+        }
+        if (sourceId != '不限') {
+            param += param ? '&' : '';
+            param += "source=" + sourceId;
         }
         if (keyWords) {
             param += param ? '&' : '';
