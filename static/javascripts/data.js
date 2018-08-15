@@ -55,6 +55,10 @@ function hide_show(curr_ele){
 }
 
 function invest(){
+    var sourceMap = {};
+    sourceMap.xiniu = "稀牛";
+    sourceMap.itjuzi = "IT桔子";
+    sourceMap.jz36k= "鲸准";
 
     var table = $('#invest').DataTable({
       "searching": false,
@@ -95,7 +99,7 @@ function invest(){
                 "data": "source",
                 "orderable": false,
                 "render": function (data, type, row) {
-                    return '<div class="center">' + data + '</div>';    
+                    return '<div class="center">' + sourceMap[data] + '</div>';    
                 }
             },
             { "data": "finance_date",
@@ -182,15 +186,6 @@ function invest(){
     $("#regionChina").click(function () {
         document.getElementById("cityDiv").style.display = 'block';
     });
-    // $("#sourceAll").click(function () {
-    //     document.getElementById("sourceDiv").style.display = 'none';
-    // });
-    // $("#sourceGongshang").click(function () {
-    //     document.getElementById("sourceDiv").style.display = 'none';
-    // });
-    // $("#sourceCrawler").click(function () {
-    //     document.getElementById("sourceDiv").style.display = 'block';
-    // });
     
     $("#investDate").on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
