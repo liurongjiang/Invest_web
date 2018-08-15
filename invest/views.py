@@ -12,7 +12,7 @@ from flask_login import current_user,login_required
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(name)s:%(levelname)s:%(asctime)s:%(message)s')
-file_handler = logging.FileHandler('invest.log')
+file_handler = logging.FileHandler('logs/invest.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 

@@ -1,6 +1,5 @@
 #coding=utf-8
 import logging
-
 from flask import request, render_template, redirect, url_for, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
@@ -18,7 +17,7 @@ import pyrad.packet
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(name)s:%(levelname)s:%(asctime)s:%(message)s')
-file_handler = logging.FileHandler('auth.log')
+file_handler = logging.FileHandler('logs/auth.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
@@ -48,9 +47,9 @@ def login():
                 new_user = User(username=form.username.data)
                 db.session.add(new_user)
                 db.session.commit()
-                logger.info('{} ')
                 login_user(new_user, remember=form.remember.data)
-            logger.info('{} login successful'.format(form.username.data))
+                logger.info('{}:{} created'.format(current_user.id, new_user.username))
+            logger.info('{}:{} login'.format(current_user.username, current_user.id))
             return redirect(url_for('asset.invest_list'))
 
         # create request
