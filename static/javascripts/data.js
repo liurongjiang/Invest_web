@@ -186,6 +186,17 @@ function invest(){
     $("#regionChina").click(function () {
         document.getElementById("cityDiv").style.display = 'block';
     });
+    $('input[name="investDate"]').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+            format: 'YYYY-MM-DD'
+        }
+    });
+
+    $('input[name="investDate"]').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+        passParams();
+    });
     
     $("#investDate").on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
