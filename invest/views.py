@@ -49,4 +49,4 @@ def test():
 @invest.route('/log/check_record/<int:record_id>', methods=('GET', 'POST'))
 def check_record(record_id):
     logger.info('{} checked record_id {}'.format(current_user.username, str(record_id)))
-    return 'success'
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
