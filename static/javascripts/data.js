@@ -25,9 +25,9 @@ function format(d){
     // `d` is the original data object for the row
     table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width="100%"><tr width="100%s" style="background-color:rgb(215, 221, 219); ">';
     table += '<td width="8%" ></td>';
-    table += '<td style="text-align:left;vertical-align:top;" width="12%"><span style="color:red;">企业名称: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;'+ d['company_name'] +'</td>';
-    table += '<td style="text-align:left;vertical-align:top;" width="32%" ><p><span style="color:red;">项目简介: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;'+ d['introduction'] +'</p></td>';
-    table += '<td style="text-align:left;vertical-align:top;" width="20%" ><p><span style="color:red;">投资方: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;'+ d['institution'] +'</p></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="12%"><span style="color:red;">企业名称: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['company_name'] +'</td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="32%" ><p><span style="color:red;">项目简介: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['introduction'] +'</p></td>';
+    table += '<td style="text-align:left;vertical-align:top;" width="20%" ><p><span style="color:red;">投资方: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['institution'] +'</p></td>';
     table += '<td width="8%" ></td>';
     table += '</tr></table>';
 
