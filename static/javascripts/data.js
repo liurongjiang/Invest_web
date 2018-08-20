@@ -56,8 +56,8 @@ function hide_show(curr_ele){
 
 function invest(){
     var sourceMap = {};
-    sourceMap.xiniu = "稀牛";
-    sourceMap.itjuzi = "IT桔子";
+    sourceMap.xiniu = "烯牛";
+    sourceMap.itjuzi = "it桔子";
     sourceMap.jz36k= "鲸准";
 
     var table = $('#invest').DataTable({
