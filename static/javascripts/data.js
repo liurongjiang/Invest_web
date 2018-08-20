@@ -24,11 +24,7 @@ function format(d){
     });
     // `d` is the original data object for the row
     table = '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" width="100%"><tr width="100%s" style="background-color:rgb(215, 221, 219); ">';
-    table += '<td width="8%" ></td>';
-    table += '<td style="text-align:left;vertical-align:top;" width="12%"><span style="color:red;">企业名称: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['company_name'] +'</td>';
     table += '<td style="text-align:left;vertical-align:top;" width="32%" ><p><span style="color:red;">项目简介: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['introduction'] +'</p></td>';
-    table += '<td style="text-align:left;vertical-align:top;" width="20%" ><p><span style="color:red;">投资方: <br></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+ d['institution'] +'</p></td>';
-    table += '<td width="8%" ></td>';
     table += '</tr></table>';
 
     return table;
@@ -78,28 +74,32 @@ function invest(){
       },
       // 列控制
         "columns": [
-            {   "data": "logo",
-                "orderable":      false,
+            {
+                "data": "project_name",
+                "orderable": false,
+                "className": 'details-control',
                 "render": function (data, type, row) {
-                    return '<div class="center"><img src="'+ data +'" style="max-width: 38px;max-height: 38px;"></img><div>';
+                    return '<div class="center"><a href="#">' + data + '</a></div>';
                 }
             },
-            {   "data":           null,
-                "orderable":      false,
-                "className":      'details-control',
-                "defaultContent": ''
+            {   "data": 'institution',
+                "orderable": false,
+                "className": 'institution',
+                "render": function (data, type, row) {
+                    return collapse(data); 
+                }
             },
-            { "data": "project_name",
+            {   "data":"cleaned_company_name",
                 "orderable":      false,
                 "render": function (data, type, row) {
-                    return '<div class="center"><a href="'+ row.source_url +'" target="_blank">' + data + '</a></div>';
+                    return '<div class="center">' + data +' </div>';
                 }
             },
             {
                 "data": "source",
                 "orderable": false,
                 "render": function (data, type, row) {
-                    return '<div class="center">' + sourceMap[data] + '</div>';    
+                    return '<div class="center"><a href="' + row.source_url + '" target="_blank">' + sourceMap[data] + '</a></div>';
                 }
             },
             { "data": "finance_date",
@@ -150,13 +150,25 @@ function invest(){
         var row = table.row( tr );
         if ( row.child.isShown() ) {
             // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
+            row.child.hide();   
+            // tr.removeClass('shown');
         }
         else {
             // Open this row
             row.child(format(row.data())).show();
-            tr.addClass('shown');
+            // tr.addClass('shown');
+        }
+    });
+    $('#invest').on('click', 'td.institution', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var td = $(this).closest('td');
+        var institution = row.data().institution;
+        $(this).toggleClass('expand');
+        if ($(this).hasClass('expand')){
+            $(this).html(collapse(institution));
+        }else{
+            $(this).html(expand(institution));
         }
     });
 
@@ -229,7 +241,34 @@ function invest(){
         $("#investDate").val(res);
         passParams();
    });
-    
+    function collapse(data) {
+        if (data.includes('|')) {
+            var count = 2;
+            while (count < 3) {
+                count++;
+                data = data.replace('|', '<br>');
+            }
+            if (count >= 3) {
+                index = data.indexOf('|');
+                if (index > 0) {
+                    console.log(index);
+                    remainingString = data.substring(index, data.length);
+                    console.log(remainingString);
+                    if(data.substring(index+1, data.length).includes('|') ) { //check if more than 1 element left
+                        data = data.replace(remainingString, '<br><a href="#">等等</a>');
+                    }else{
+                        data = data.replace('|', '<br>');
+                    }
+                }
+            }
+        }
+        return '<div class="center">' + data + '</div>'; 
+    }
+    function expand(data) {
+        data = data.replace(/['|']/g, '<br>');
+        return '<div class="center">' + data + '</div>';
+    }
+
     function passParams() {
         var industryId = $(".industry.filter_font").attr("value");
         var roundId = $(".round.filter_font").attr("value");
