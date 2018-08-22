@@ -164,12 +164,12 @@ function invest(){
         var row = table.row(tr);
         var td = $(this).closest('td');
         var institution = row.data().institution;
-        $(this).toggleClass('expand');
         if ($(this).hasClass('expand')){
             $(this).html(collapse(institution));
         }else{
             $(this).html(expand(institution));
         }
+        $(this).toggleClass('expand');
     });
 
     // $(".a.b") 且
