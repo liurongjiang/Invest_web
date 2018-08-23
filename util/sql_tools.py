@@ -1,15 +1,19 @@
 #coding=utf-8
 from my_time import *
+from util.es_search import search_by_elasticsearch
 from util.date_regex_handler import investDateHandler
 
 def query_list(table_name, args):
+    KEYWORDS = args.get('keyWords') or None
+
     LENGTH=args.get('length') or 10
     START = args.get('start') or 0
+    if KEYWORDS: 
+        return None, None, search_by_elasticsearch(KEYWORDS, START, LENGTH)
     INDUSTRY = args.get('industry') or None
     ROUND = args.get('round') or None
     REGION = args.get('region') or None
     SOURCE = args.get('source') or None
-    KEYWORDS = args.get('keyWords') or None
     INVESTDATE = args.get('investDate') or None
     LIMIT=' LIMIT %s, %s' % (START, LENGTH)
     order_colum_index=args.get('order[0][column]')
@@ -59,10 +63,12 @@ def query_list(table_name, args):
         else:
             WHERES.append('source !="工商"')
 
-
-    if KEYWORDS:
-        keyInfo = ' (project_name LIKE "%'+ KEYWORDS.strip() + '%" OR company_name like"%'+ KEYWORDS.strip() +'%")'
-        WHERES.append(keyInfo)
+    ''' 
+        @该部分调整为通过es搜索
+        if KEYWORDS:
+            keyInfo = ' (project_name LIKE "%'+ KEYWORDS.strip() + '%" OR company_name like"%'+ KEYWORDS.strip() +'%")'
+            WHERES.append(keyInfo)
+    '''
 
     if WHERES:
         WHERE += ' WHERE ' + ' AND '.join(WHERES)
@@ -71,4 +77,7 @@ def query_list(table_name, args):
     query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT
     count_sql='SELECT COUNT(1) ' + FROM + WHERE
     print('__sql: ', query_sql)
-    return query_sql, count_sql
+    return query_sql, count_sql, None
+
+
+
