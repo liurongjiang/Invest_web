@@ -31,7 +31,7 @@ def invest_json():
     
     #通过搜索服务取得数据，不再走mysql
     query_sql, count_sql, resp = query_list(table_name, args)
-    if resp: return json.dumps(resp)
+    if resp is not None: return json.dumps(resp)
 
     docs = mysql.query(query_sql)
     count = mysql.query(count_sql)
