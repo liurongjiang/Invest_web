@@ -7,7 +7,7 @@ from database.mysql_tool import MysqlHandler
 #from database.my_mysql import MysqlHandle
 #mysql_settings=yaml.load(open('./yamls/mysql.yaml'))
 #mysql=MysqlHandle(mysql_settings)
-from flask_login import current_user,login_required
+from flask_login import current_user, login_required
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -15,6 +15,7 @@ formatter = logging.Formatter('%(name)s:%(levelname)s:%(asctime)s:%(message)s')
 file_handler = logging.FileHandler('logs/invest.log')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
+
 mysql=MysqlHandler()
 
 @invest.route('/list', methods=('GET', 'POST'))  #指定路由为/，因为run.py中指定了前缀，浏览器访问时，路径为http://IP/asset/
@@ -28,7 +29,10 @@ def invest_json():
     args=request.args
     table_name='integrated_company'
     
-    query_sql, count_sql = query_list(table_name, args)
+    #通过搜索服务取得数据，不再走mysql
+    query_sql, count_sql, resp = query_list(table_name, args)
+    if resp: return json.dumps(resp)
+
     docs = mysql.query(query_sql)
     count = mysql.query(count_sql)
 
@@ -50,3 +54,4 @@ def test():
 def check_record(record_id):
     logger.info('{} checked record_id {}'.format(current_user.username, str(record_id)))
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
