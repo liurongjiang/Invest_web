@@ -12,6 +12,7 @@ class MysqlHandler():
         self.pool = pymysql_pool.ConnectionPool(size=20, name='pool', **config)
 
     def query(self, query_sql):
+        results=[]
         conn=self.pool.get_connection()
         try:
             with conn as cursor:
@@ -22,17 +23,17 @@ class MysqlHandler():
                     for tup in description:
                         keys.append(tup[0])
                 fetch = cursor.fetchall()
-                results=[]
                 for res_tup in fetch:
                     dic={}
                     for index in range(0, len(res_tup)):
                         dic[keys[index]]=res_tup[index]
                     results.append(dic)
-                return results
         except Exception as e:
             print('___err_sql: ', query_sql)
             print( e )
-            return []
+        finally:
+            self.pool.put_connection(conn)
+            return results
 
     def update(self, update_sql):
         conn=self.pool.get_connection()
@@ -41,8 +42,10 @@ class MysqlHandler():
                 cursor.execute(update_sql)
                 conn.commit()
         except Exception as e:
-            print('___err_sql: ', update_sql)
             print( e )
+            print('___err_sql: ', update_sql)
+        finally:
+            self.pool.put_connection(conn)
         
     def insert(self, inset_sql):
         self.update(inset_sql)
