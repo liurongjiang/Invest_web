@@ -4,6 +4,7 @@ from flask import Flask, template_rendered
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.serving import run_simple
 
 app = Flask(__name__,
             template_folder='templates',  # 指定模板路径，可以是相对路径，也可以是绝对路径。
@@ -35,6 +36,8 @@ app.register_blueprint(invest, url_prefix='/invest')  # 注册asset蓝图，并�
 from auth import auth
 app.register_blueprint(auth, url_prefix='/auth')  # 注册asset蓝图，并指定前缀。
 
+
 if __name__ == '__main__':
          # 运行flask http程序，host指定监听IP，port指定监听端口，调试时需要开启debug模式。
-         app.run(host='0.0.0.0', port=5000,threaded=True)
+         app.run(host='0.0.0.0', port=5000,threaded=True)\
+         
