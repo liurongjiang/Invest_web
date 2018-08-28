@@ -10,6 +10,9 @@ pymysql = "*"
 flask-wtf = "*"
 pyrad = "*"
 flask-sqlalchemy = "*"
+flask-bootstrap = "*"
+flask-login = "*"
+elasticsearch = "*"
 
 [dev-packages]
 "autopep8" = "*"
