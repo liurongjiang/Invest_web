@@ -13,6 +13,7 @@ flask-sqlalchemy = "*"
 flask-bootstrap = "*"
 flask-login = "*"
 elasticsearch = "*"
+tornado = "*"
 
 [dev-packages]
 "autopep8" = "*"
