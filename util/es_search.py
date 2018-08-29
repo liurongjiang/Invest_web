@@ -1,6 +1,7 @@
 #coding=utf-8
 import re
 from elasticsearch import Elasticsearch
+from run import logger
 
 es=Elasticsearch('http://192.168.1.180:9200/')
 
@@ -106,7 +107,7 @@ def search_by_elasticsearch(keyword, start, length):
     resp={}
     docs=[]
     
-    print(query_sql)
+    logger.debug('__es_query_sql: %s' % query_sql)
     for result in results:
         doc={}
         doc=result['_source']
@@ -116,7 +117,7 @@ def search_by_elasticsearch(keyword, start, length):
         docs.append(doc)
     
     if not docs: return resp
-
+    
     resp['data']=docs
     resp['recordsTotal']=total
     resp['recordsLength']=total
