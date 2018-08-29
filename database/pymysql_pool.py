@@ -8,14 +8,17 @@ try:
     import queue
 except:
     import Queue as queue
-import logging
+#import logging
 import threading
+from run import logger
 
+'''
 warnings.filterwarnings('error', category=pymysql.err.Warning)
 # use logging module for easy debug
 logging.basicConfig(format='%(asctime)s %(levelname)8s: %(message)s', datefmt='%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 logger.setLevel('WARNING')
+'''
 
 class Connection(pymysql.connections.Connection):
     """
@@ -114,12 +117,12 @@ class ConnectionPool:
         """
         try:
             conn = self._pool.get(timeout=timeout) if timeout > 0 else self._pool.get_nowait()
-            logger.debug('Get connection from pool(%s)', self.name)
+            #logger.debug('Get connection from pool(%s)', self.name)
             return conn
         except queue.Empty:
             if retry_num > 0:
                 self._THREAD_LOCAL.retry_counter += 1
-                logger.debug('Retry get connection from pool(%s), the %d times', self.name, self._THREAD_LOCAL.retry_counter)
+                #logger.debug('Retry get connection from pool(%s), the %d times', self.name, self._THREAD_LOCAL.retry_counter)
                 retry_num -= 1
                 return self.get_connection(timeout, retry_num)
             else:
@@ -134,7 +137,7 @@ class ConnectionPool:
         conn.cursor().close()
         try:
             self._pool.put_nowait(conn)
-            logger.debug("Put connection back to pool(%s)", self.name)
+            #logger.debug("Put connection back to pool(%s)", self.name)
         except queue.Full:
             logger.warning("Put connection to pool(%s) error, pool is full, size:%d", self.name, self.size())
 
