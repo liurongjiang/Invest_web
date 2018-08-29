@@ -1,5 +1,6 @@
 #coding=utf-8
 from . import pymysql_pool
+from run import logger
 
 class MysqlHandler():
     
@@ -14,7 +15,7 @@ class MysqlHandler():
     def query(self, query_sql):
         results=[]
         conn=self.pool.get_connection()
-        print('__query_sql: ', query_sql)
+        logger.debug('__query_sql: %s' % query_sql)
 
         try:
             with conn as cursor:
@@ -24,23 +25,24 @@ class MysqlHandler():
                     keys=[]
                     for tup in description:
                         keys.append(tup[0])
-                    fetch = cursor.fetchall()
-                    for res_tup in fetch:
-                        dic={}
-                        for index in range(0, len(res_tup)):
-                            dic[keys[index]]=res_tup[index]
-                    results.append(dic)
                 else:
-                    print( '__err: description is: ', description )
+                    logger.error('__err: description is: %s' % description)
+                logger.debug('keys: %s' % keys)
+                fetch = cursor.fetchall()
+                for res_tup in fetch:
+                    dic={}
+                    for index in range(0, len(res_tup)):
+                        dic[keys[index]]=res_tup[index]
+                    results.append(dic)
         except Exception as e:
-            print( e )
+            logger.error('QUERY_ERROR: %s' % e)
         finally:
             self.pool.put_connection(conn)
-            print( len( results ) )
+            logger.debug('results.length: %s' % len( results ))
             return results
 
     def update(self, update_sql):
-        print('___update_insert_sql: ', update_sql)
+        logger.debug('___update_insert_sql: %s' % update_sql)
         conn=self.pool.get_connection()
         try:
             with conn as cursor:
