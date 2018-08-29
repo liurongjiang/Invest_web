@@ -6,6 +6,11 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.serving import run_simple
 
+import logging
+logging.basicConfig(format='%(asctime)s %(levelname)8s: %(message)s', datefmt='%m-%d %H:%M:%S')
+logger = logging.getLogger(__name__)
+logger.setLevel('WARNING')
+
 app = Flask(__name__,
             template_folder='templates',  # 指定模板路径，可以是相对路径，也可以是绝对路径。
             static_folder='static',  # 指定静态文件前缀，默认静态文件路径同前缀
@@ -19,7 +24,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'
 login_manager.login_message = u"需要以经纬邮箱登陆才能采访这页面"
-
 
 class User(UserMixin, db.Model):
     from run import db
