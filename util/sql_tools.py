@@ -74,9 +74,8 @@ def query_list(table_name, args):
         WHERE += ' WHERE ' + ' AND '.join(WHERES)
     ORDER_BY=' ORDER BY %s %s' % (ORDER_KEY, ORDER_DIR)
 
-    query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT
-    count_sql='SELECT COUNT(1) ' + FROM + WHERE
-    print('__sql: ', query_sql)
+    query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT + ';'
+    count_sql='SELECT COUNT(1) ' + FROM + WHERE + ';'
     return query_sql, count_sql, None
 
 
