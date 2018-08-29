@@ -16,17 +16,16 @@ class MysqlHandler():
         results=[]
         conn=self.pool.get_connection()
         logger.debug('__query_sql: %s' % query_sql)
-
         try:
+            logger.info('__pool_size is: %s' % self.pool.size())
             with conn as cursor:
                 cursor.execute(query_sql)
                 description = cursor.description
+                logger.info('__description is: %s' % str( description) )
                 if description:
                     keys=[]
                     for tup in description:
                         keys.append(tup[0])
-                else:
-                    logger.error('__err: description is: %s' % description)
                 logger.debug('keys: %s' % keys)
                 fetch = cursor.fetchall()
                 for res_tup in fetch:
