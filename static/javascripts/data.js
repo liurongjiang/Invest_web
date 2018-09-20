@@ -77,19 +77,14 @@ function invest(){
             {
                 "data": "project_name",
                 "orderable": false,
-                "className": 'details-control',
+                //"className": 'details-control',
                 "render": function (data, type, row) {
-                    return '<div class="center"><a href="#">' + data + '</a></div>';
+                    //return '<div class="center"><a href="#">' + data + '</a></div>';
+                    return '<div class="center"><a href="../invest/content?id='+ row.id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
-            {   "data": 'institution',
-                "orderable": false,
-                "className": 'institution',
-                "render": function (data, type, row) {
-                    return collapse(data); 
-                }
-            },
-            {   "data":"cleaned_company_name",
+            /*
+                {   "data":"cleaned_company_name",
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data +' </div>';
@@ -102,34 +97,40 @@ function invest(){
                     return '<div class="center"><a href="' + row.source_url + '" target="_blank">' + sourceMap[data] + '</a></div>';
                 }
             },
-            { "data": "finance_date",
+
+            {   
+                "data": "city",
+                "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
                 }
             },
+
+            */
+            { "data": "finance_date",
+                "render": function (data, type, row) {
+                    return '<div class="center">' + data + '</div>';
+                    }
+                },
             { "data": "finance_turn",
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
                 }
             },
-            { "data": "finance_amount",
+            {   "data": "finance_amount",
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">'+ data +' </div>';
                 }
             },
-            { "data": "currency",
+            { 
+                "data": "currency",
                 "orderable":      false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
                 }
             },
-            { "data": "city",
-                "orderable":      false,
-                "render": function (data, type, row) {
-                    return '<div class="center">' + data + '</div>';
-                }
-            },
+
             { "data": "industry_tags",
                 "orderable":      false,
                 "render": function (data, type, row) {
@@ -141,8 +142,15 @@ function invest(){
                     }*/
                     return '<div class="center">' + data + '</div>';
                 }
+            },
+            {   "data": 'institution',
+                "orderable": false,
+                "className": 'institution',
+                "render": function (data, type, row) {
+                    return collapse(data); 
+                }
             }
-      ]
+        ]
     });
     $('.dataTables_scrollBody').attr('class', 'dataTables_scrollBody auto_crawler');
     $('#invest').on('click', 'td.details-control', function () {
