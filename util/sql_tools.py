@@ -71,11 +71,13 @@ def query_list(table_name, args):
     '''
 
     if WHERES:
-        WHERE += ' WHERE ' + ' AND '.join(WHERES)
+        WHERE += ' WHERE ' + ' AND '.join(WHERES) + ' AND turn_level != ""'
     ORDER_BY=' ORDER BY %s %s' % (ORDER_KEY, ORDER_DIR)
+    WHERE=WHERE or ' WHERE turn_level != "" '
 
     query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT + ';'
     count_sql='SELECT COUNT(1) ' + FROM + WHERE + ';'
+    print( query_sql )
     return query_sql, count_sql, None
 
 

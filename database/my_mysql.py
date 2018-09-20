@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import sys, yaml, pymysql, pymysql.cursors
+from database.pymysqlpool import ConnectionPool
 
 class Singleton(object):
     def __new__(cls, *args, **kw):
@@ -8,31 +8,31 @@ class Singleton(object):
             cls._instance = orig.__new__(cls, *args, **kw)
         return cls._instance
 
-class MysqlHandle():
+class MysqlHandler():
     '''@ 此处采用单列模式，
        @ 避免过多的实例化。
         '''
 
-    def __init__(self, settings):
-        self.settings = settings
+    def __init__(self, settings=None):
         self.config = {
-            'host':         self.settings['HOST'],
-            'port':         self.settings['PORT'],
-            'user':         self.settings['USER'],
-            'password':     self.settings['PASSWORD'],
-            'db':           self.settings['DB'],
-            'charset':      self.settings['CHARSET'],
-            'cursorclass': pymysql.cursors.DictCursor
-        }
-        self.conn = self._conn()
+            'pool_name': 'test',
+            'host': '192.168.1.180',
+            'port': 3306,
+            'user': 'rongjiang',
+            'password': 'password4321',
+            'database': 'integrated',
+            'max_pool_size': 20
+        } if settings is None else settings
+        
+        self.pool = self.connection_pool()
 
-    def _conn(self):
-        connection = pymysql.connect(**self.config)
-        return connection
+    def connection_pool(self):
+        pool = ConnectionPool(**self.config)
+        return pool
 
     def query(self, sql):
         try:
-            with self.conn.cursor() as cursor:
+            with self.pool.cursor() as cursor:
                 cursor.execute(sql)
                 results = cursor.fetchall()
                 return results
@@ -42,23 +42,20 @@ class MysqlHandle():
 
     def insert(self, sql):
         try:
-            with self.conn.cursor() as cursor:
+            with self.pool.cursor() as cursor:
                 cursor.execute(sql)
-                self.conn.commit()
+                self.pool.commit()
         except Exception as e:
             print(e)
             
 
     def update(self, update_sql):
         try:
-            with self.conn.cursor() as cursor:
+            with self.pool.cursor() as cursor:
                 cursor.execute(update_sql)
-                self.conn.commit()
+                self.pool.commit()
         except Exception as e:
             print(e)
-
-    def close(self):
-        self.conn.close()
 
 if __name__ == '__main__':
     pass

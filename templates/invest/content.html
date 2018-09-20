@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>数据查询检索</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <link rel='stylesheet' href='/static/stylesheets/style.css'/>
+        <link rel="stylesheet" type="text/css" href="/static/stylesheets/jquery.dataTables.min.css">
+
+        <style type="text/css" title="currentStyle">
+            @import "/static/stylesheets/jquery-ui.css";
+            @import "/static/stylesheets/jquery-base.css";
+        </style>
+        <style>
+            .dropdown {
+                float: left;
+                overflow: hidden;
+            }
+
+            .dropdown .dropbtn {
+                cursor: pointer;
+                font-size: 16px;    
+                border: none;
+                outline: none;
+                color: lightblue;
+                padding: 14px 16px;
+                background-color: inherit;
+                font-family: inherit;
+                margin: 0;
+            }
+
+            .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+                background-color: darkgrey;
+            }
+
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: grey;
+                color: black;
+                min-width: 160px;
+                z-index: 1;
+            }
+
+            .dropdown-content a {
+                float: none;
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+
+            .show {
+                display: block;
+            }
+            body{height:100%; overflow:; margin:0px; padding:0px;}
+            .box {height:100%; position:absolute; width:100%;}
+            .center {text-align:center}
+            .left {text-align:left}
+            .right {text-align:right}
+            .auto_data {
+                    overflow: auto;
+            }
+            .auto {
+                    height: 88%;
+                    overflow: auto;
+            }
+            .dataTables_length{
+                margin: 0 23px;
+            }
+            .dataTables_filter{
+                margin: 0 20px;
+            }
+            .head_filter{
+                float: left;
+                min-width: 50px;
+                cursor: pointer;
+                margin: 0 10px 5px 0;
+                text-align: center;
+                display: inline-block;
+                padding: 2px 6px;
+            }
+            .filter_font{
+                color:hotpink;
+                font-weight: bold;
+            }
+            .row {
+                width: 80%;
+                max-width: 100%;
+                min-width: 768px;
+                margin: 0 auto;
+            }
+            .constrain{
+                width: 80%;
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+            .mytd {
+                border-left: thin dashed grey;
+                border-right: thin dashed grey;
+                border-bottom: thin dashed grey;
+                border-top: thin dashed grey;
+            }
+            .div_module {
+                min-height: 180px;
+                margin-bottom: 20px;
+                background-color: rgb(235, 237, 238);
+            }
+            .div-inline{
+                display: inline;
+                background-color: #fff;
+            }
+            .module{
+                height: 36px;
+                margin-bottom: 0px;
+                background-color:rgb(175, 216, 203) ;
+            }
+        </style>
+        <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
+        <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="/static/javascripts/moment.js"></script>
+        <script type="text/javascript" src="/static/javascripts/content.js"></script>
+    </head>
+    <body>
+        <div id="container" class="box">
+            <nav id="main" class="constrain clearfix">
+                <div class="menu-top-container">
+                    <ul id="menu-top" class="menu" style='width:100%;'>
+                        <li class="menu-item current" data-name="servinfo"><a>项目/公司</a></li>
+                        <li class="menu-item" data-name="servinfo"><a href="/invest/list">投融资事件</a></li>
+                        <li class="menu-item" data-name="servinfo"><a href="/logout">投资机构</a></li>
+                        <li class="menu-item" data-name="servinfo">
+                        {% if user.username %}
+                        <li class="menu-item" style='float:right;'>
+                            <div class="dropdown">
+                                <button class="dropbtn" onclick="usernameFunction()">{{user.username}}
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="usernameDropdown">
+                                    <a href="{{url_for('auth.logout')}}">退出账号</a>
+                                </div>
+                            </div>
+                        </li>
+                        {% else %}
+                            <li class="menu-item" data-name="login"><a href="{{url_for('auth.login')}}">登录</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+            <div id="content-wrapper" class="clearfix row auto">
+                <div style="width:80%; margin-left: 10%; margin-bottom: 80px;">
+                    <div id="project_info" class="div_module">
+                    </div>
+                    <div class="div-inline">
+                        <div class="div-inline"><img src="/static/images/info4.png" style="width: 35px; height: 35px;"></div>
+                        <div class="div-inline">&nbsp;<b>团队成员信息</b></div>
+                    </div>
+                    <div id="team_info" class="div_module">
+                    </div>
+                    <div class="div-inline">
+                        <div class="div-inline"><img src="/static/images/info3.png" style="width: 35px; height: 35px;"></div>
+                        <div class="div-inline">&nbsp;<b>最近一次融资</b></div>
+                    </div>
+                    <div class="div_module">
+                        <br/>
+                        <table width="100%">
+                            <thead>
+                                <th width="25%" ><div class="center">融资时间</div></th>
+                                <th width="25%"><div class="center">当前轮次</div></th>
+                                <th width="25%"><div class="center">融资金额</div></th>
+                                <th width="25%"><div class="center">投资方</div></th>
+                            </thead>
+                            <tbody id="invest_info">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="height:10px;"></div>
+            </div>
+        </div>
+    </body>
+</html>
+
+
