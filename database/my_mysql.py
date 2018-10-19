@@ -44,7 +44,7 @@ class MysqlHandler():
         try:
             with self.pool.cursor() as cursor:
                 cursor.execute(sql)
-                self.pool.commit()
+                #self.pool.commit()
         except Exception as e:
             print(e)
 
@@ -52,7 +52,7 @@ class MysqlHandler():
         try:
             with self.pool.cursor() as cursor:
                 cursor.execute(update_sql)
-                self.pool.commit()
+                #self.pool.commit()
         except Exception as e:
             print(e)
 
