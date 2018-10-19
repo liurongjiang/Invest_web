@@ -5,15 +5,26 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
+        <link href="/static/stylesheets/jquery-ui.css" rel="stylesheet">
         <link rel='stylesheet' href='/static/stylesheets/style.css'/>
         <link rel="stylesheet" type="text/css" href="/static/stylesheets/jquery.dataTables.min.css">
 
         <style type="text/css" title="currentStyle">
-         @import "/static/stylesheets/jquery-ui.css";
          @import "/static/stylesheets/jquery-base.css";
         </style>
         <style>
-
+        .custom-btn {
+            padding: 6px 21px;
+            border-radius: 4px;
+            color: #08ba81;
+            font-size: 17px;
+            text-align: center;
+            border: 1px solid #089274;
+            cursor: pointer;
+            position: relative;
+            top: 5px;
+            z-index: 11;
+        }
         .dropdown {
             float: left;
             overflow: hidden;
@@ -55,7 +66,7 @@
         .show {
             display: block;
         }
-        body{height:100%; overflow:; margin:0px; padding:0px;}
+        body{height:100%; overflow: 0px; margin:0px; padding:0px;}
         .box {height:100%; position:absolute; width:100%;}
         .center {text-align:center}
         .left {text-align:left}
@@ -112,7 +123,12 @@
             font-style:normal;
         }
         </style>
-        <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!--
+            <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.js"></script>
+            <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery-ui.min.js"></script>
+        -->
         <script type="text/javascript" src="/static/javascripts/lib/datatable/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="/static/javascripts/moment.js"></script>
         <script type="text/javascript" src="/static/javascripts/data.js"></script>
@@ -274,6 +290,7 @@
                 <p>
                     <hr style="height:10px;border:none;border-top:10px groove skyblue;" />
                 </p>
+                <div id="mydailog" title="反馈记录"></div>
                 <div id="table" >
                     <table id="invest" class="cell-border hover order-column" style="width:100%;" >
                         <thead>
@@ -291,6 +308,8 @@
                                 <th width="5%">币种</th>
                                 <th width="10%">行业分类</th>
                                 <th width="15%">投资机构</th>
+                                <th width="10%">项目领取</th>
+                                <th width="10%">反馈</th>
                             </tr>
                         </thead>
                         <tbody class="clearfix row auto">
