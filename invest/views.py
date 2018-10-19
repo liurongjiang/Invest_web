@@ -66,3 +66,41 @@ def check_record(record_id):
     logger.info('{} checked record_id {}'.format(current_user.username, str(record_id)))
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+@invest.route('/receiptor')
+def receipte():
+    resp = {'status': 200, 'msg': 'success!!!'}
+    try:
+        username=request.args.get('username')
+        matrix_id=request.args.get('matrix_id')
+        update_sql='UPDATE matrix_invest_project SET receiptor="%s" WHERE matrix_id="%s";' % (username, matrix_id)
+        mysql.update(update_sql)
+        try:
+            insert_sql='INSERT INTO matrix_invest_feedback (`matrix_id`, `user_name`, `feedback_desc`) VALUES ("%s", "%s", "")' % (matrix_id, username)
+            mysql.insert(insert_sql)
+        except Exception as e:
+            print( e )
+    except Exception as e:
+        resp['status']=0
+        resp['statmsgus']= '%s' % e
+    return json.dumps(resp)
+
+@invest.route('/feedback', methods=('GET', 'POST'))
+def feedback():
+    resp = {'status': 200, 'msg': 'success!!!', 'data': {}}
+    if request.method == 'GET':
+        #query()
+        matrix_id=request.args.get('matrix_id')
+        query_sql='SELECT feedback_desc FROM matrix_invest_feedback WHERE matrix_id="%s";' % matrix_id.strip()
+        result=mysql.query(query_sql)
+        resp['data']={'feedback_desc': result[0]['feedback_desc']}
+    elif request.method == 'POST':
+        #submit
+        try:
+            matrix_id=request.args.get('matrix_id')
+            desc=request.args.get('desc')
+            update_sql='UPDATE matrix_invest_feedback SET feedback_desc="%s" WHERE matrix_id="%s";' % (desc, matrix_id)
+            mysql.update(update_sql)
+        except Exception as e:
+            resp['status']=0
+            resp['msg']= '%s' % e
+    return json.dumps(resp)
