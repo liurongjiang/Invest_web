@@ -47,7 +47,6 @@ class MysqlHandler():
                 self.pool.commit()
         except Exception as e:
             print(e)
-            
 
     def update(self, update_sql):
         try:
