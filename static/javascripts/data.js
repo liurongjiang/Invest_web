@@ -47,7 +47,99 @@ function hide_show(curr_ele){
             console.log(err)
         }
     }, this);
+}
 
+function func_feedback(matrix_id, receiptor, user_name){
+    console.log(matrix_id, receiptor, user_name)
+    if(matrix_id=='null' || matrix_id.trim()=='' || receiptor.trim()=='' || receiptor=='null'){
+        return null;
+    }
+    $.ajax({
+        type: "GET",                      //请求类型
+        url: "/invest/feedback?matrix_id=" + matrix_id,
+        dataType: "json",                 //返回的数据类型
+        success: function(data){          //data就是返回的json类型的数据
+            //var value = htmlDecodeByRegExp(data.crawlLog);
+            $( "#mydailog").html('<textarea style="white-space: pre-wrap;" id="feedback" rows="14%" cols="100%">领取人：'+ receiptor +' &#10; &#10; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;记录：'+data['data']['feedback_desc']+'</textarea>');
+        },
+        error: function(data){
+            alert('error');
+        }
+    });
+    if(receiptor.trim()==user_name.trim()){
+        $("#mydailog").dialog(
+            {
+                buttons: [
+                    {
+                        text: "更新",
+                        icon: "ui-icon-heart",
+                        click: function() {
+                            info=""
+                            var desc = $('#feedback').val().trim();
+                            var patt=new RegExp(/记录：([\s\S]+)/);
+                            result = patt.exec(desc)
+                            if(result.length > 0){
+                                info=result[1];
+                            }
+                            $.ajax({
+                                type: "POST",                      //请求类型
+                                url: "/invest/feedback?matrix_id=" + matrix_id + '&desc=' + info,
+                                contentType: "application/json; charset=utf-8",
+                                data: '{}',
+                                dataType: "json",                 //返回的数据类型
+                                success: function(data){          //data就是返回的json类型的数据
+                                    alert('更新成功');
+                                },
+                                error: function(data){
+                                    alert('更新失败')
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text: "关闭",
+                        icon: "ui-icon-heart",
+                        click: function() {
+                        $( this ).dialog( "close" );
+                        }
+                    }
+                ],
+                width: 800,
+                height: 413,
+            });
+    }else{
+        $("#mydailog").dialog({
+            buttons: [
+                {
+                    text: "关闭",
+                    icon: "ui-icon-heart",
+                    click: function() {
+                    $( this ).dialog( "close" );
+                    }
+                }
+            ],
+            width: 800,
+            height: 413
+        });
+    };
+}
+
+function func_receiptor(matrix_id, username){
+    console.log(this);
+    $.ajax({
+        type: "GET",                      //请求类型
+        url: "/invest/receiptor?username="+username+"&matrix_id="+matrix_id,
+        dataType: "json",                 //返回的数据类型
+        success: function(data){          //data就是返回的json类型的数据
+            alert('领取成功')
+        },
+        error: function(data){
+            alert('领取失败');
+        }
+    });
+}
+function func_unreceiptor(matrix_id){
+    a='';
 }
 
 function invest(){
@@ -55,7 +147,7 @@ function invest(){
     sourceMap.xiniu = "烯牛";
     sourceMap.itjuzi = "it桔子";
     sourceMap.jz36k= "鲸准";
-
+    username=$('.dropbtn').text().trim();
     var table = $('#invest').DataTable({
       "searching": false,
       "processing": true,
@@ -143,11 +235,32 @@ function invest(){
                     return '<div class="center">' + data + '</div>';
                 }
             },
-            {   "data": 'institution',
+            {   "data": "institution",
                 "orderable": false,
                 "className": 'institution',
                 "render": function (data, type, row) {
                     return collapse(data); 
+                }
+            },
+            { "data": "receiptor",
+                "render": function (data, type, row) {
+                    if(data==''||data==undefined){
+                        return '<div class="center"><a href="#" onclick="func_receiptor(\''+ row.matrix_id +'\', \''+ username +'\')">点击领取</a></div>';
+                    }else if(data==username){
+                        return '<div class="center">已领取</div>';
+                    }else if(data!=username){
+                        return '<div class="center">已被领取</div>';
+                    }
+                }
+            },
+            {   "data": "receiptor",
+                "render": function (data, type, row) {
+                    console.log(data)
+                    if(data=='' || data == null || data=='undefined'){
+                        return '<div class="center">查看记录</div>';
+                    }else{
+                        return '<div class="center"><a href="#" onclick="func_feedback(\''+ row.matrix_id +'\', \'' + data + '\', \''+ username +'\')">查看记录</a></div>';
+                    }
                 }
             }
         ]
@@ -179,7 +292,6 @@ function invest(){
         }
         $(this).toggleClass('expand');
     });
-
     // $(".a.b") 且
     // $(".a, .b") 或
     // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
