@@ -3,7 +3,21 @@ from my_time import *
 from util.es_search import search_by_elasticsearch
 from util.date_regex_handler import investDateHandler
 
+industy_map={
+    'B2B交易平台': 'B2B 交易平台',
+    '消费升级/零售': '消费',
+    '新技术/智能': '新技术(智能)',
+    '文娱/移动2C': '文娱+移动2C',
+    '互联网金融/区块链': '互联网金融',
+    '企业服务': '企业服务',
+    '成长项目': '成长',
+    '大出行': '大出行',
+    '医疗': '医疗',
+    '教育': '教育',
+    '其他': '其他'
+}
 def query_list(table_name, args):
+    table_name=table_name
     KEYWORDS = args.get('keyWords') or None
 
     LENGTH=args.get('length') or 10
@@ -22,7 +36,10 @@ def query_list(table_name, args):
     if int(order_colum_index):
         ORDER_KEY=args.get('columns[%s][data]' % order_colum_index)
         ORDER_DIR=args.get('order[0][dir]')
-
+    if SOURCE:
+        if SOURCE.strip() == '工商':
+            table_name='holding_detect_company'
+            ORDER_KEY='holding_date'
     #1 FROM 
     FROM = ' FROM %s' % table_name
 
@@ -41,7 +58,7 @@ def query_list(table_name, args):
             WHERES.append('finance_time <= %s' % endDateTime)
 
     if INDUSTRY:
-        WHERES.append('industry="%s"' % INDUSTRY)
+        WHERES.append('industry="%s"' % industy_map[INDUSTRY])
 
     if ROUND:
         roundInfo = 'turn_level >= 16' if ROUND=='其它' else ' finance_turn="%s"' % ROUND
@@ -56,12 +73,6 @@ def query_list(table_name, args):
             WHERES.append('country="中国"')
         else:
             WHERES.append('city="%s"' % REGION)
-    
-    if SOURCE:
-        if SOURCE == '工商':
-            WHERES.append('source="%s"' % SOURCE)
-        else:
-            WHERES.append('source !="工商"')
 
     ''' 
         @该部分调整为通过es搜索
