@@ -50,16 +50,29 @@ def invest_json():
 @invest.route('/project_json', methods=('GET', 'POST'))
 def project_json():
     args=request.args
-    query_sql='SELECT * FROM matrix_invest_project WHERE %s' % args.get('id')
+    query_sql='SELECT * FROM matrix_invest_project WHERE matrix_id="%s";' % args.get('matrix_id')
     docs = mysql.query(query_sql)
     return json.dumps( docs )
 
-@invest.route('/team_json', methods=('GET', 'POST'))
-def team_json():
+@invest.route('/team_list', methods=('GET', 'POST'))
+def team_list():
     args=request.args
-    query_sql='SELECT * FROM matrix_invest_team WHERE %s' % args.get('id')
+    query_sql='SELECT * FROM matrix_invest_team WHERE matrix_id="%s";' % args.get('matrix_id')
     docs = mysql.query(query_sql)
     return json.dumps( docs )
+
+@invest.route('/event_list', methods=('GET', 'POST'))
+def event_list():
+    args=request.args
+    query_sql='SELECT * FROM matrix_invest_event WHERE matrix_id="%s" ORDER BY finance_time DESC;' % args.get('matrix_id')
+    docs = mysql.query(query_sql)
+    resp={}
+    resp['data']=docs
+    resp['recordsTotal']=len(docs)
+    resp['recordsLength']=len(docs)
+    resp['recordsFiltered']=len(docs)
+    return json.dumps( resp )
+
 
 @invest.route('/log/check_record/<int:record_id>', methods=('GET', 'POST'))
 def check_record(record_id):
