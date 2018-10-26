@@ -172,38 +172,39 @@ function invest(){
                 //"className": 'details-control',
                 "render": function (data, type, row) {
                     //return '<div class="center"><a href="#">' + data + '</a></div>';
-                    return '<div class="center"><a href="../invest/content?id='+ row.id +'" target="_Blank">'+ data + '</a></div>';
-                }
-            },
-            /*
-                {   "data":"cleaned_company_name",
-                "orderable":      false,
-                "render": function (data, type, row) {
-                    return '<div class="center">' + data +' </div>';
+                    return '<div class="center"><a href="../invest/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
             {
-                "data": "source",
+                "data": "project_name",
                 "orderable": false,
+                "visible": false,
+                //"className": 'details-control',
                 "render": function (data, type, row) {
-                    return '<div class="center"><a href="' + row.source_url + '" target="_blank">' + sourceMap[data] + '</a></div>';
+                    //return '<div class="center"><a href="#">' + data + '</a></div>';
+                    return '<div class="center">'+ data + '</div>';
                 }
             },
-
-            {   
-                "data": "city",
-                "orderable":      false,
+            {   "data":"cleaned_company_name",
+                "orderable": false,
+                "visible": false,
+                "render": function (data, type, row) {
+                    return '<div class="center"><a href="../invest/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
+                }
+            },
+            {
+                "data": "holding_date",
+                "visible": false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
                 }
             },
 
-            */
             { "data": "finance_date",
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
-                    }
-                },
+                }
+            },
             { "data": "finance_turn",
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
@@ -212,26 +213,19 @@ function invest(){
             {   "data": "finance_amount",
                 "orderable":      false,
                 "render": function (data, type, row) {
-                    return '<div class="center">'+ data +' </div>';
+                    var regx=RegExp('未');
+                    if(regx.test(data)){
+                        return '<div class="center">'+ data +' </div>';
+                    }
+                    return '<div class="center">'+ data + row.currency +' </div>';
                 }
             },
-            { 
-                "data": "currency",
-                "orderable":      false,
-                "render": function (data, type, row) {
-                    return '<div class="center">' + data + '</div>';
-                }
-            },
-
             { "data": "industry_tags",
                 "orderable":      false,
                 "render": function (data, type, row) {
-                    /*
-                    resp=''
-                    resls=data.split('|')
-                    for(i in resls){
-                        resp += resls[i] + '</br>'
-                    }*/
+                    if(row.industry!='' && row.industry!=undefined){
+                        return '<div class="center">' + row.industry + '</div>';
+                    }
                     return '<div class="center">' + data + '</div>';
                 }
             },
@@ -265,6 +259,24 @@ function invest(){
             }
         ]
     });
+    // $(".a.b") 且
+    // $(".a, .b") 或
+    // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
+    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round'],[class='source']").click(function(){
+        var _class = $(this).attr("class");
+        if ($(this).attr("value")=='工商'){
+            table.columns( [0, 4] ).visible( false, false );
+            table.columns( [1, 2, 3] ).visible( true, true );
+        } else if ( $(this).attr("value")=='消息源' ){
+            table.columns( [0, 4] ).visible( true, true );
+            table.columns( [1, 2, 3] ).visible( false, false );
+        }
+        att='.' + _class + '.filter_font';
+        $(att).attr('class', _class);
+        $(this).addClass('filter_font');
+        passParams();
+    });
+    $.fn.dataTable.ext.errMode = 'throw';
     $('.dataTables_scrollBody').attr('class', 'dataTables_scrollBody auto_crawler');
     $('#invest').on('click', 'td.details-control', function () {
         var tr = $(this).closest('tr');
@@ -292,20 +304,6 @@ function invest(){
         }
         $(this).toggleClass('expand');
     });
-    // $(".a.b") 且
-    // $(".a, .b") 或
-    // $("span[class!='filter_font'], [class='industry'], [class='country'], [class='round']") 混合
-    $("span[class!='filter_font'], [class='industry'], [class='region'], [class='round'],[class='source']").click(function(){
-        var _class = $(this).attr("class");
-        console.log(_class);
-        att='.' + _class + '.filter_font';
-        $(att).attr('class', _class);
-        $(this).addClass('filter_font');
-        passParams();
-    });
-
-    $.fn.dataTable.ext.errMode = 'throw';
-
     $("#keyWords").change(function(){
         passParams();
     });
@@ -324,22 +322,18 @@ function invest(){
             format: 'YYYY-MM-DD'
         }
     });
-
     $('input[name="investDate"]').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
         passParams();
     });
-    
     $("#investDate").on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
         passParams();
     });
-
     $("#investDate").on('apply.daterangepicker', function(ev, picker) {
         $(this).val(picker.startDate.format('YYYY-MM-DD') + ' / ' + picker.endDate.format('YYYY-MM-DD'));
         passParams();
     });
-
     $("#lastWeekBtn").click(function () {
         today = moment();
         var daysFromLastFriday = today.day() + 2;
@@ -352,15 +346,15 @@ function invest(){
         $("#investDate").val(res);
         passParams();
     });
+    $("#lastMonthBtn").click(function () {
+            today = moment();
+            var start = moment(today).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+            var end = moment(today).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
+            var res = start + ' / ' + end;
+            $("#investDate").val(res);
+            passParams();
+    });
 
-   $("#lastMonthBtn").click(function () {
-        today = moment();
-        var start = moment(today).subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
-        var end = moment(today).subtract(1, 'months').endOf('month').format('YYYY-MM-DD');
-        var res = start + ' / ' + end;
-        $("#investDate").val(res);
-        passParams();
-   });
     function collapse(data) {
         if (data.includes('|')) {
             var count = 2;
@@ -388,7 +382,6 @@ function invest(){
         data = data.replace(/['|']/g, '<br>');
         return '<div class="center">' + data + '</div>';
     }
-
     function passParams() {
         var industryId = $(".industry.filter_font").attr("value");
         var roundId = $(".round.filter_font").attr("value");
@@ -422,7 +415,6 @@ function invest(){
             param += param ? '&' : '';
             param += "investDate=" + investDate;
         }
-        console.log(param);
         table.ajax.url('/invest/invest_json?' + param).load();
     }
 }
