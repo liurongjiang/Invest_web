@@ -116,8 +116,6 @@ def search_by_elasticsearch(keyword, start, length):
             doc[key]=re.sub('</em><em>', '', ''.join(highlight[key]) )
         docs.append(doc)
     
-    if not docs: return resp
-    
     resp['data']=docs
     resp['recordsTotal']=total
     resp['recordsLength']=total
