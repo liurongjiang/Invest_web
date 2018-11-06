@@ -28,11 +28,9 @@ def project_content():
 
 @invest.route('/invest_json', methods=('GET', 'POST'))
 def invest_json():
-    args=request.args
-    table_name='matrix_invest_project'
-    
+    args=request.args    
     #通过搜索服务取得数据，不再走mysql
-    query_sql, count_sql, resp = query_list(table_name, args)
+    query_sql, count_sql, resp = query_list(args)
     if resp is not None: return json.dumps(resp)
 
     docs = mysql.query(query_sql)
@@ -52,6 +50,9 @@ def project_json():
     args=request.args
     query_sql='SELECT * FROM matrix_invest_project WHERE matrix_id="%s";' % args.get('matrix_id')
     docs = mysql.query(query_sql)
+    if not docs:
+        query_sql='SELECT * FROM holding_detect_company WHERE matrix_id="%s";' % args.get('matrix_id')
+        docs = mysql.query(query_sql)
     return json.dumps( docs )
 
 @invest.route('/team_list', methods=('GET', 'POST'))
@@ -85,7 +86,9 @@ def receipte():
     try:
         username=request.args.get('username')
         matrix_id=request.args.get('matrix_id')
-        update_sql='UPDATE matrix_invest_project SET receiptor="%s" WHERE matrix_id="%s";' % (username, matrix_id)
+        update_sql='UPDATE matrix_invest_project SET receiptor="%s", status=2 WHERE matrix_id="%s";' % (username, matrix_id)
+        mysql.update(update_sql)
+        update_sql='UPDATE holding_detect_company SET receiptor="%s", status=2 WHERE matrix_id="%s";' % (username, matrix_id)
         mysql.update(update_sql)
         try:
             insert_sql='INSERT INTO matrix_invest_feedback (`matrix_id`, `user_name`, `feedback_desc`) VALUES ("%s", "%s", "")' % (matrix_id, username)
