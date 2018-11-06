@@ -14,32 +14,43 @@ industy_map={
     '大出行': '大出行',
     '医疗': '医疗',
     '教育': '教育',
+    '区块链': '区块链',
     '其他': '其他'
 }
-def query_list(table_name, args):
-    table_name=table_name
-    KEYWORDS = args.get('keyWords') or None
 
+def query_list(args):
+    """
+
+    """
+    KEYWORDS = args.get('keyWords') or None
     LENGTH=args.get('length') or 10
     START = args.get('start') or 0
+    #default__________________________
+    SOURCE = args.get('source') or '消息源'
+    if SOURCE=='消息源':
+        ORDER_KEY='finance_time'
+        table_name='matrix_invest_project'
+        default_where = ' WHERE turn_level != "" '
+        DOC_TYPE='event'
+    elif SOURCE=='工商':
+        table_name='holding_detect_company'
+        ORDER_KEY='detect_date'
+        default_where = ''
+        DOC_TYPE='gongshang'
     if KEYWORDS: 
-        return None, None, search_by_elasticsearch(KEYWORDS, START, LENGTH)
+        return None, None, search_by_elasticsearch(KEYWORDS, START, LENGTH, DOC_TYPE)
+
     INDUSTRY = args.get('industry') or None
     ROUND = args.get('round') or None
     REGION = args.get('region') or None
-    SOURCE = args.get('source') or None
     INVESTDATE = args.get('investDate') or None
     LIMIT=' LIMIT %s, %s' % (START, LENGTH)
     order_colum_index=args.get('order[0][column]')
-    ORDER_KEY='finance_time'
     ORDER_DIR='DESC'
     if int(order_colum_index):
         ORDER_KEY=args.get('columns[%s][data]' % order_colum_index)
         ORDER_DIR=args.get('order[0][dir]')
-    if SOURCE:
-        if SOURCE.strip() == '工商':
-            table_name='holding_detect_company'
-            ORDER_KEY='holding_date'
+
     #1 FROM 
     FROM = ' FROM %s' % table_name
 
@@ -49,16 +60,21 @@ def query_list(table_name, args):
 
     if INVESTDATE:
         dateLs=INVESTDATE.split('/')
-        startDate=investDateHandler(dateLs[0])
-        startDateTime=date2time(startDate)
-        WHERES.append('finance_time >= %s' % startDateTime)
-        if len(dateLs)==2 and dateLs[1]:
-            endDate=investDateHandler(dateLs[1])
-            endDateTime=date2time(endDate)
-            WHERES.append('finance_time <= %s' % endDateTime)
+        if SOURCE=='工商':
+            WHERES.append('detect_date >= "%s"' % dateLs[0].strip())
+            if len(dateLs)==2 and dateLs[1]:
+                WHERES.append('detect_date <= "%s"' % dateLs[1].strip())
+        else:
+            startDate=investDateHandler(dateLs[0])
+            startDateTime=date2time(startDate)
+            WHERES.append('finance_time >= %s' % startDateTime)
+            if len(dateLs)==2 and dateLs[1]:
+                endDate=investDateHandler(dateLs[1])
+                endDateTime=date2time(endDate)
+                WHERES.append('finance_time <= %s' % endDateTime)
 
     if INDUSTRY:
-        WHERES.append('industry="%s"' % industy_map[INDUSTRY])
+        WHERES.append('industry like "%'+ industy_map[INDUSTRY] +'%"')
 
     if ROUND:
         roundInfo = 'turn_level >= 16' if ROUND=='其它' else ' finance_turn="%s"' % ROUND
@@ -74,20 +90,15 @@ def query_list(table_name, args):
         else:
             WHERES.append('city="%s"' % REGION)
 
-    ''' 
-        @该部分调整为通过es搜索
-        if KEYWORDS:
-            keyInfo = ' (project_name LIKE "%'+ KEYWORDS.strip() + '%" OR company_name like"%'+ KEYWORDS.strip() +'%")'
-            WHERES.append(keyInfo)
-    '''
-
     if WHERES:
-        WHERE += ' WHERE ' + ' AND '.join(WHERES) + ' AND turn_level != ""'
-    ORDER_BY=' ORDER BY %s %s' % (ORDER_KEY, ORDER_DIR)
-    if SOURCE and SOURCE.strip() != '工商':
-        WHERE=WHERE or ' WHERE turn_level != "" '
+        WHERE += ' WHERE ' + ' AND '.join(WHERES)
+        if SOURCE=='消息源':
+            WHERE += ' AND turn_level != ""'
+    else:
+        WHERE=default_where
 
-    query_sql='SELECT * ' + FROM + WHERE + ORDER_BY + LIMIT + ';'
+    ORDER_BY=' ORDER BY %s %s' % (ORDER_KEY, ORDER_DIR)
+    query_sql='SELECT *' + FROM + WHERE + ORDER_BY + LIMIT + ';'
     count_sql='SELECT COUNT(1) ' + FROM + WHERE + ';'
     print( query_sql )
     return query_sql, count_sql, None
