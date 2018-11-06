@@ -30,8 +30,9 @@ function format(d){
     return table;
 }
 
-
 $(document).ready(function() {
+    $("#keyWords").val('');
+    $("#investDate").val('');
     invest();
 });
 
@@ -185,7 +186,7 @@ function invest(){
                     return '<div class="center">'+ data + '</div>';
                 }
             },
-            {   "data":"cleaned_company_name",
+            {   "data":"company_name",
                 "orderable": false,
                 "visible": false,
                 "render": function (data, type, row) {
@@ -193,7 +194,7 @@ function invest(){
                 }
             },
             {
-                "data": "holding_date",
+                "data": "detect_date",
                 "visible": false,
                 "render": function (data, type, row) {
                     return '<div class="center">' + data + '</div>';
@@ -220,11 +221,13 @@ function invest(){
                     return '<div class="center">'+ data + row.currency +' </div>';
                 }
             },
-            { "data": "industry_tags",
+            { "data": "industry",
                 "orderable":      false,
                 "render": function (data, type, row) {
+                    
                     if(row.industry!='' && row.industry!=undefined){
-                        return '<div class="center">' + row.industry + '</div>';
+                        var industrys=row.industry.replace('|', '<br/>');
+                        return '<div class="center">' + industrys + '</div>';
                     }
                     return '<div class="center">' + data + '</div>';
                 }
@@ -267,6 +270,17 @@ function invest(){
         if ($(this).attr("value")=='工商'){
             table.columns( [0, 4] ).visible( false, false );
             table.columns( [1, 2, 3] ).visible( true, true );
+
+            today = moment();
+            var daysFromLastFriday = today.day() + 2;
+            var daysFromLastLastSat = daysFromLastFriday + 6;
+            var LastLastSat = moment().subtract(daysFromLastLastSat, 'days');
+            var lastFriday = moment().subtract(daysFromLastFriday, 'days');
+            var start = LastLastSat.format('YYYY-MM-DD');
+            var end = lastFriday.format('YYYY-MM-DD');
+            var res = start + ' / ' + end;
+            $("#investDate").val(res);
+
         } else if ( $(this).attr("value")=='消息源' ){
             table.columns( [0, 4] ).visible( true, true );
             table.columns( [1, 2, 3] ).visible( false, false );
@@ -305,6 +319,18 @@ function invest(){
         $(this).toggleClass('expand');
     });
     $("#keyWords").change(function(){
+        //清空日期
+        $("#investDate").val('');
+        //清空行业分类
+        $(".industry.filter_font").attr('class', 'industry');
+        $("span[value='不限'][class='industry']").attr('class', 'industry filter_font');
+        //清空轮次
+        $(".round.filter_font").attr('class', 'round');
+        $("span[value='不限'][class='round']").attr('class', 'round filter_font');
+        //清空区域
+        $(".region.filter_font").attr('class', 'region');
+        $("span[value='不限'][class='region']").attr('class', 'region filter_font');
+        $("#cityDiv").css('display', 'none');
         passParams();
     });
     $("#regionAll").click(function () {
@@ -387,8 +413,12 @@ function invest(){
         var roundId = $(".round.filter_font").attr("value");
         var regionId = $(".region.filter_font").attr("value");
         var sourceId = $(".source.filter_font").attr("value");
-        var keyWords = $("#keyWords").val();
         var investDate = $("#investDate").val();
+        if(industryId=='不限' && roundId=='不限' && regionId=='不限' && investDate==''){
+            var keyWords = $("#keyWords").val();
+        }else{
+            $("#keyWords").val('');
+        }
 
         var param = "";
         if (industryId != '不限') {
