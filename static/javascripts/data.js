@@ -330,17 +330,7 @@ function invest(){
         //清空区域
         $(".region.filter_font").attr('class', 'region');
         $("span[value='不限'][class='region']").attr('class', 'region filter_font');
-        $("#cityDiv").css('display', 'none');
         passParams();
-    });
-    $("#regionAll").click(function () {
-        document.getElementById("cityDiv").style.display = 'none';
-    });
-    $("#regionOverseas").click(function () {
-        document.getElementById("cityDiv").style.display = 'none';
-    });
-    $("#regionChina").click(function () {
-        document.getElementById("cityDiv").style.display = 'block';
     });
     $('input[name="investDate"]').daterangepicker({
         autoUpdateInput: false,
