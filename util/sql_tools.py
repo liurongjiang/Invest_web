@@ -4,7 +4,7 @@ from util.es_search import search_by_elasticsearch
 from util.date_regex_handler import investDateHandler
 
 industy_map={
-    'B2B交易平台': 'B2B 交易平台',
+    'B2B交易平台': 'B2B交易平台',
     '消费升级/零售': '消费',
     '新技术/智能': '新技术(智能)',
     '文娱/移动2C': '文娱+移动2C',
