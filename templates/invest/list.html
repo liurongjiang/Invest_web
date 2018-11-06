@@ -65,16 +65,24 @@
                     </ul>
                 </div>
             </nav>
-            <div id="content-wrapper" class="clearfix row auto">
+                <div id="content-wrapper" class="clearfix row auto">
+                    <div width="100%">
+                        <div class="head_filter" style="margin-left: 25px;">
+                            <b><span class="source" value='工商' id='sourceGongshang'>工商监测</span></b>
+                        </div>
+                        <div class="head_filter">
+                            <b><span class="source filter_font" value='消息源' id='sourceCrawler'>投融资消息源</span></b>
+                        </div>
+                    </div>
+                </br></br>
+                <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
                 <div width="100%">
-                    <div class="head_filter" style="margin-left: 25px;">
-                        <b><span class="source" value='工商' id='sourceGongshang'>工商监测</span></b>
-                    </div>
-                    <div class="head_filter">
-                        <b><span class="source filter_font" value='消息源' id='sourceCrawler'>投融资消息源</span></b>
-                    </div>
+                        <div class="head_filter">
+                            <b><label style="color: #020808e1; font-size: 15px; margin-left: 25px;">搜索(公司/项目／关键词):</label></b>
+                        </div>
+                        <div class="head_filter"><input name="keyWords" style="width: 200px; z-index: 10000;" placeholder="请输入关键词" value="" id="keyWords"></input></div>
                 </div>
-                </br>
+                </br></br>
                 <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
                 <div width="100%">
                         <div class="head_filter">
@@ -99,14 +107,6 @@
                             <div class="head_filter" ><span class="region" value='苏州' >苏州</span></div>
                             <div class="head_filter" ><span class="region" value='南京' >南京</span></div>
                             <div class="head_filter" ><span class="region" value='武汉' >武汉</span></div>
-                </div>
-                </br>
-                <hr style="height:10px;border:none;border-top:1px groove skyblue;" />
-                <div width="100%">
-                        <div class="head_filter">
-                            <label style="color: #00b8c0; font-size: 16px; margin-left: 25px;">搜索(公司/项目／关键词):</label>
-                        </div>
-                        <div class="head_filter"><input name="keyWords" style="width: 200px; z-index: 10000;" placeholder="请输入关键词" value="" id="keyWords"></input></div>
                 </div>
                 </br>
                 <p>
@@ -172,7 +172,6 @@
                         <thead>
                             <tr>
                                 <th width="5%">项目名称</th>
-
                                 <th width="5%">项目名称</th>
                                 <th width="10%">企业名称</th>
                                 <th width="10%">监测日期</th>
