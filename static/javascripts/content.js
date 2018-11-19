@@ -112,4 +112,9 @@ $(document).ready(function() {
             }
         ]
     });
+
+    $.ajax({
+        url: '/invest/log/check_record/' + res[1],
+    });
+
 });
