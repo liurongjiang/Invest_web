@@ -5,7 +5,7 @@ from util.sql_tools import *
 from flask import request, render_template
 from database.my_mysql import MysqlHandler
 from flask_login import current_user, login_required
-
+from util.my_time import c_date_time
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 formatter = logging.Formatter('%(name)s:%(levelname)s:%(asctime)s:%(message)s')
@@ -75,9 +75,15 @@ def event_list():
     return json.dumps( resp )
 
 
-@invest.route('/log/check_record/<int:record_id>', methods=('GET', 'POST'))
+@invest.route('/log/check_record/<string:record_id>', methods=('GET', 'POST'))
 def check_record(record_id):
-    logger.info('{} checked record_id {}'.format(current_user.username, str(record_id)))
+    '''
+        用户行为统计分析。
+        存储当前时间、username、project_id
+    '''
+    insert_sql='INSERT INTO matrix_project_scan (`username`, `project_id`, `scan_date_time`) VALUES ("%s", "%s", "%s")' % (current_user.username, record_id, c_date_time())
+    mysql.insert( insert_sql )
+    logger.info('{} checked record_id {}'.format(current_user.username, record_id))
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 @invest.route('/receiptor')
