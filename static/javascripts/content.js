@@ -94,20 +94,13 @@ $(document).ready(function() {
                     return '<div class="center">'+ data +' </div>';
                 }
             },
-            { 
-                "data": "currency",
-                "orderable":      false,
-                "render": function (data, type, row) {
-                    return '<div class="center">' + data + '</div>';
-                }
-            },
             {   "data": "institution",
                 "orderable": false,
                 "className": 'institution',
                 "render": function (data, type, row) {
                     var reg = new RegExp( /\|/ , "g" );
                     data=data.replace(reg, '、');
-                    return data; 
+                    return '<div class="center">'+ data +' </div>';; 
                 }
             }
         ]
