@@ -302,7 +302,7 @@ function invest(){
         }
         else {
             // Open this row
-            row.child(format(row.data())).show();
+            row.child( format(row.data()) ).show();
             // tr.addClass('shown');
         }
     });
@@ -438,3 +438,5 @@ function invest(){
         table.ajax.url('/invest/invest_json?' + param).load();
     }
 }
+
+
