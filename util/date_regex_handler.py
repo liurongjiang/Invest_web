@@ -18,4 +18,4 @@ def investDateHandler(string):
             day='01'
         else:
             day = '0' + day
-    return '%s-%s-%s 00:00:00' % (year, month, day)
+    return '%s-%s-%s' % (year, month, day)
