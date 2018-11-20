@@ -65,7 +65,7 @@ def team_list():
 @invest.route('/event_list', methods=('GET', 'POST'))
 def event_list():
     args=request.args
-    query_sql='SELECT * FROM matrix_invest_event WHERE matrix_id="%s" ORDER BY finance_time DESC;' % args.get('matrix_id')
+    query_sql='SELECT * FROM matrix_invest_event WHERE matrix_id="%s" ORDER BY finance_date DESC;' % args.get('matrix_id')
     docs = mysql.query(query_sql)
     resp={}
     resp['data']=docs
