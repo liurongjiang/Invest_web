@@ -1,4 +1,5 @@
 #coding=utf-8
+import re
 from my_time import *
 from util.es_search import search_by_elasticsearch
 from util.date_regex_handler import investDateHandler
@@ -28,9 +29,9 @@ def query_list(args):
     #default__________________________
     SOURCE = args.get('source') or '消息源'
     if SOURCE=='消息源':
-        ORDER_KEY='finance_time'
+        ORDER_KEY='finance_date'
         table_name='matrix_invest_project'
-        default_where = ' WHERE turn_level != "" '
+        default_where = ' WHERE finance_turn != "" '
         DOC_TYPE='event'
     elif SOURCE=='工商':
         table_name='holding_detect_company'
@@ -59,6 +60,7 @@ def query_list(args):
     WHERES = []
 
     if INVESTDATE:
+        INVESTDATE=re.sub('00:00:00', '', INVESTDATE)
         dateLs=INVESTDATE.split('/')
         if SOURCE=='工商':
             WHERES.append('detect_date >= "%s"' % dateLs[0].strip())
@@ -66,12 +68,12 @@ def query_list(args):
                 WHERES.append('detect_date <= "%s"' % dateLs[1].strip())
         else:
             startDate=investDateHandler(dateLs[0])
-            startDateTime=date2time(startDate)
-            WHERES.append('finance_time >= %s' % startDateTime)
+            #startDateTime=date2time(startDate)
+            WHERES.append('finance_date >= "%s"' % startDate)
             if len(dateLs)==2 and dateLs[1]:
                 endDate=investDateHandler(dateLs[1])
-                endDateTime=date2time(endDate)
-                WHERES.append('finance_time <= %s' % endDateTime)
+                #endDateTime=date2time(endDate)
+                WHERES.append('finance_date <= "%s"' % endDate)
 
     if INDUSTRY:
         WHERES.append('industry like "%'+ industy_map[INDUSTRY] +'%"')
@@ -93,7 +95,7 @@ def query_list(args):
     if WHERES:
         WHERE += ' WHERE ' + ' AND '.join(WHERES)
         if SOURCE=='消息源':
-            WHERE += ' AND turn_level != ""'
+            WHERE += ' AND finance_turn != ""'
     else:
         WHERE=default_where
 
