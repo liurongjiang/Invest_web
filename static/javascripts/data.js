@@ -218,7 +218,7 @@ function invest(){
                     if(regx.test(data)){
                         return '<div class="center">'+ data +' </div>';
                     }
-                    return '<div class="center">'+ data + row.currency +' </div>';
+                    return '<div class="center">'+ data +' </div>';
                 }
             },
             { "data": "industry",
