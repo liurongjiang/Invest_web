@@ -35,7 +35,7 @@ $(document).ready(function() {
           }
           project_info += tags;
           project_info += '</td></tr>';
-          project_info += '<tr><td colspan="3"><ul class="company-info" style="white-space:nowrap;"><li style="margin-left: 16px;" class="li">城市：'+ obj.city +'</li><li class="li">公司名称：'+ obj.company_name +'</li><li class="li">成立日期：'+ obj.establish_date +'</li><li class="li">联系电话：'+ obj.tell +'</li><li class="li">邮箱：'+ obj.mail +'</li></ul></td></tr>';
+          project_info += '<tr><td colspan="3"><ul class="company-info" style="white-space:nowrap;"><li style="margin-left: 16px;" class="li">地区：'+ obj.city +'</li><li class="li">公司名称：'+ obj.company_name +'</li><li class="li">成立日期：'+ obj.establish_date +'</li><li class="li">联系电话：'+ obj.tell +'</li><li class="li">邮箱：'+ obj.mail +'</li></ul></td></tr>';
           project_info += '</table>';
           $('#project_info').append(project_info);
       }
