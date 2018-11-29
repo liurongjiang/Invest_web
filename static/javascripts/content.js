@@ -5,7 +5,7 @@ $(document).ready(function() {
     // 项目信息
     $.ajax({
       type: "GET",                      //请求类型
-      url: "/invest/project_json?matrix_id=" + res[1],
+      url: "./project_json?matrix_id=" + res[1],
       dataType: "json",                 //返回的数据类型
       success: function(data){          //data就是返回的json类型的数据
           content = '<table>';
@@ -44,7 +44,7 @@ $(document).ready(function() {
     // 团队信息
     $.ajax({
         type: "GET",                      //请求类型
-        url: "/invest/team_list?matrix_id=" + res[1],
+        url: "./team_list?matrix_id=" + res[1],
         dataType: "json",                 //返回的数据类型
         success: function(data){          //data就是返回的json类型的数据
             var team_info='';
@@ -69,7 +69,7 @@ $(document).ready(function() {
       "paging": false,
       "autoWidth": true,
       "ajax": {
-        "url": "/invest/event_list?matrix_id=" + res[1],
+        "url": "./event_list?matrix_id=" + res[1],
         "dataSrc": function(data){
             return data.data;
         },
@@ -107,7 +107,7 @@ $(document).ready(function() {
     });
 
     $.ajax({
-        url: '/invest/log/check_record/' + res[1],
+        url: './log/check_record/' + res[1],
     });
 
 });
