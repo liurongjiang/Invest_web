@@ -18,7 +18,7 @@ var language = {
 function format(d){
     console.log(d);
     $.ajax({
-        url: '/invest/log/check_record/'+d.id,
+        url: '/invest/event/log/check_record/'+d.id,
     }).done(function () {
         console.log('logged!');
     });
@@ -57,7 +57,7 @@ function func_feedback(matrix_id, receiptor, user_name){
     }
     $.ajax({
         type: "GET",                      //请求类型
-        url: "/invest/feedback?matrix_id=" + matrix_id,
+        url: "/invest/event/feedback?matrix_id=" + matrix_id,
         dataType: "json",                 //返回的数据类型
         success: function(data){          //data就是返回的json类型的数据
             //var value = htmlDecodeByRegExp(data.crawlLog);
@@ -84,7 +84,7 @@ function func_feedback(matrix_id, receiptor, user_name){
                             }
                             $.ajax({
                                 type: "POST",                      //请求类型
-                                url: "/invest/feedback?matrix_id=" + matrix_id + '&desc=' + info,
+                                url: "/invest/event/feedback?matrix_id=" + matrix_id + '&desc=' + info,
                                 contentType: "application/json; charset=utf-8",
                                 data: '{}',
                                 dataType: "json",                 //返回的数据类型
@@ -129,7 +129,7 @@ function func_receiptor(matrix_id, username){
     console.log(this);
     $.ajax({
         type: "GET",                      //请求类型
-        url: "/invest/receiptor?username="+username+"&matrix_id="+matrix_id,
+        url: "/invest/event/receiptor?username="+username+"&matrix_id="+matrix_id,
         dataType: "json",                 //返回的数据类型
         success: function(data){          //data就是返回的json类型的数据
             alert('领取成功')
@@ -160,7 +160,7 @@ function invest(){
       "autoWidth": true,
       "language": language,
       "ajax": {
-        "url": "/invest/invest_json",
+        "url": "/invest/event/invest_json",
         "dataSrc": function(data){
             return data.data;
         },
@@ -173,7 +173,7 @@ function invest(){
                 //"className": 'details-control',
                 "render": function (data, type, row) {
                     //return '<div class="center"><a href="#">' + data + '</a></div>';
-                    return '<div class="center"><a href="../invest/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
+                    return '<div class="center"><a href="../invest/event/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
             {
@@ -190,7 +190,7 @@ function invest(){
                 "orderable": false,
                 "visible": false,
                 "render": function (data, type, row) {
-                    return '<div class="center"><a href="../invest/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
+                    return '<div class="center"><a href="../invest/event/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
             {
@@ -435,7 +435,7 @@ function invest(){
             param += param ? '&' : '';
             param += "investDate=" + investDate;
         }
-        table.ajax.url('/invest/invest_json?' + param).load();
+        table.ajax.url('/invest/event/invest_json?' + param).load();
     }
 }
 
