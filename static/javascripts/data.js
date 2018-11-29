@@ -173,7 +173,7 @@ function invest(){
                 //"className": 'details-control',
                 "render": function (data, type, row) {
                     //return '<div class="center"><a href="#">' + data + '</a></div>';
-                    return '<div class="center"><a href="../event/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
+                    return '<div class="center"><a href="./content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
             {
@@ -190,7 +190,7 @@ function invest(){
                 "orderable": false,
                 "visible": false,
                 "render": function (data, type, row) {
-                    return '<div class="center"><a href="../event/content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
+                    return '<div class="center"><a href="./content?matrix_id='+ row.matrix_id +'" target="_Blank">'+ data + '</a></div>';
                 }
             },
             {
