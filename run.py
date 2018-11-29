@@ -115,7 +115,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 #server = flask.Flask(__name__)
-app = dash.Dash(__name__, url_base_pathname='/invest/insitution/', server=server, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, url_base_pathname='/insitution/', server=server, external_stylesheets=external_stylesheets)
 
 #app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -327,4 +327,4 @@ def turn_percent_vis(n_clicks, institution_selected_list,start_date, end_date, i
 	}
 
 if __name__ == '__main__':
-		app.run_server(host='0.0.0.0', port=5000, threaded=True)
+		app.run_server(host='127.0.0.1', port=80, threaded=True)
