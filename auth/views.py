@@ -7,7 +7,7 @@ from wtforms.validators import InputRequired, Email, Length, EqualTo
 
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from auth import auth
-from run import db,app, login_manager, User
+from event import db,app, login_manager, User
 
 from pyrad.client import Client
 from pyrad.dictionary import Dictionary
