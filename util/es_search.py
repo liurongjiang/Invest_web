@@ -1,7 +1,7 @@
 #coding=utf-8
 import re
 from elasticsearch import Elasticsearch
-from run import logger
+from event import logger
 
 es=Elasticsearch('http://192.168.1.180:9200/')
 
