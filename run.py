@@ -327,4 +327,4 @@ def turn_percent_vis(n_clicks, institution_selected_list,start_date, end_date, i
 	}
 
 if __name__ == '__main__':
-		app.run_server(host='127.0.0.1', port=80, threaded=True)
+		app.run_server(host='0.0.0.0', port=80, threaded=True)
