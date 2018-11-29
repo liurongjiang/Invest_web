@@ -18,7 +18,7 @@ var language = {
 function format(d){
     console.log(d);
     $.ajax({
-        url: '/invest/event/log/check_record/'+d.id,
+        url: './log/check_record/'+d.id,
     }).done(function () {
         console.log('logged!');
     });
@@ -84,7 +84,7 @@ function func_feedback(matrix_id, receiptor, user_name){
                             }
                             $.ajax({
                                 type: "POST",                      //请求类型
-                                url: "/invest/event/feedback?matrix_id=" + matrix_id + '&desc=' + info,
+                                url: "./feedback?matrix_id=" + matrix_id + '&desc=' + info,
                                 contentType: "application/json; charset=utf-8",
                                 data: '{}',
                                 dataType: "json",                 //返回的数据类型
@@ -160,7 +160,7 @@ function invest(){
       "autoWidth": true,
       "language": language,
       "ajax": {
-        "url": "/invest/event/invest_json",
+        "url": "./invest_json",
         "dataSrc": function(data){
             return data.data;
         },
@@ -435,7 +435,7 @@ function invest(){
             param += param ? '&' : '';
             param += "investDate=" + investDate;
         }
-        table.ajax.url('/invest/event/invest_json?' + param).load();
+        table.ajax.url('./invest_json?' + param).load();
     }
 }
 
