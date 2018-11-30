@@ -16,7 +16,6 @@ var language = {
 }
 
 function format(d){
-    console.log(d);
     $.ajax({
         url: './log/check_record/'+d.id,
     }).done(function () {
@@ -57,7 +56,7 @@ function func_feedback(matrix_id, receiptor, user_name){
     }
     $.ajax({
         type: "GET",                      //请求类型
-        url: "/invest/event/feedback?matrix_id=" + matrix_id,
+        url: "./feedback?matrix_id=" + matrix_id,
         dataType: "json",                 //返回的数据类型
         success: function(data){          //data就是返回的json类型的数据
             //var value = htmlDecodeByRegExp(data.crawlLog);
@@ -126,13 +125,14 @@ function func_feedback(matrix_id, receiptor, user_name){
 }
 
 function func_receiptor(matrix_id, username){
-    console.log(this);
     $.ajax({
         type: "GET",                      //请求类型
-        url: "/invest/event/receiptor?username="+username+"&matrix_id="+matrix_id,
+        url: "./receiptor?username="+username+"&matrix_id="+matrix_id,
         dataType: "json",                 //返回的数据类型
         success: function(data){          //data就是返回的json类型的数据
             alert('领取成功')
+            $('div[item="'+ matrix_id +'"]').html('已领取');
+            $('#' + matrix_id).html( '<a href="#" onclick="func_feedback(\''+ matrix_id +'\', \'' + username + '\', \''+ username +'\')">查看记录</a>');
         },
         error: function(data){
             alert('领取失败');
@@ -242,7 +242,7 @@ function invest(){
             { "data": "receiptor",
                 "render": function (data, type, row) {
                     if(data==''||data==undefined){
-                        return '<div class="center"><a href="#" onclick="func_receiptor(\''+ row.matrix_id +'\', \''+ username +'\')">点击领取</a></div>';
+                        return '<div class="center" item="'+ row.matrix_id +'" ><a href="#" onclick="func_receiptor(\''+ row.matrix_id +'\', \''+ username +'\',)">点击领取</a></div>';
                     }else if(data==username){
                         return '<div class="center">已领取</div>';
                     }else if(data!=username){
@@ -252,9 +252,8 @@ function invest(){
             },
             {   "data": "receiptor",
                 "render": function (data, type, row) {
-                    console.log(data)
                     if(data=='' || data == null || data=='undefined'){
-                        return '<div class="center">查看记录</div>';
+                        return '<div class="center" id="'+ row.matrix_id +'">查看记录</div>';
                     }else{
                         return '<div class="center"><a href="#" onclick="func_feedback(\''+ row.matrix_id +'\', \'' + data + '\', \''+ username +'\')">查看记录</a></div>';
                     }
@@ -381,9 +380,7 @@ function invest(){
             if (count >= 3) {
                 index = data.indexOf('|');
                 if (index > 0) {
-                    console.log(index);
                     remainingString = data.substring(index, data.length);
-                    console.log(remainingString);
                     if(data.substring(index+1, data.length).includes('|') ) { //check if more than 1 element left
                         data = data.replace(remainingString, '<br><a href="#">等等</a>');
                     }else{
