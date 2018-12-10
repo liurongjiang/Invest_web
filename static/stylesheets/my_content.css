@@ -176,8 +176,8 @@ a:active, a:hover {
     width: 140px;
 }
 .logo {
-    width: 100px; 
-    height: 100px; 
+    width: 60%; 
+    height: 60; 
     margin-left: 33px; 
     margin-top: 10px;
 }
