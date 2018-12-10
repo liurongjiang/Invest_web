@@ -14,7 +14,7 @@ $(document).ready(function() {
           }
           var obj = data[0];
           project_info='<table width="100%">';
-          project_info += '<tr><td rowspan="3" width="15%"><img src="'+ obj.logo +'" style="width: 100px; height: 100px;"></td><td width="15%" ><h3>'+ obj.project_name +'</h3></td><td width="20%" >'+ obj.platform_desc +'</td><td width="15%">'+ obj.city +'</td><td width="15%"></td><td width="10%"></td></tr>';
+          project_info += '<tr><td rowspan="3" width="15%"><img src="'+ obj.logo +'" style="width: 60%; height: 60%;"></td><td width="15%" ><h3>'+ obj.project_name +'</h3></td><td width="20%" >'+ obj.platform_desc +'</td><td width="15%">'+ obj.city +'</td><td width="15%"></td><td width="10%"></td></tr>';
           project_info += '<tr><td class="right">公司名称：</td><td>'+ obj.company_name +'</td><td class="right">成立日期：</td><td>'+ obj.establish_date +'</td><td></td></tr>';
           project_info += '<tr><td class="right">联系电话：</td><td></td><td class="right">邮箱：</td><td></td><td></td></tr>';
           project_info += '<tr><td class="center">项目简介：</td><td colspan="4"><br/>'+ obj.introduction +'</td><td></td></tr>';
